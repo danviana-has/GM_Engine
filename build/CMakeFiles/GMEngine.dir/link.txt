@@ -1,0 +1,3 @@
+C:\Users\Public\GMEngineTools\cmake-3.29.3-windows-x86_64\bin\cmake.exe -E rm -f CMakeFiles\GMEngine.dir/objects.a
+C:\Users\Public\GMEngineTools\mingw64\bin\ar.exe qc CMakeFiles\GMEngine.dir/objects.a @CMakeFiles\GMEngine.dir\objects1.rsp
+C:\Users\Public\GMEngineTools\mingw64\bin\g++.exe -O3 -DNDEBUG -static-libgcc -static-libstdc++ -static -Wl,--whole-archive CMakeFiles\GMEngine.dir/objects.a -Wl,--no-whole-archive -o GMEngine.exe -Wl,--out-implib,libGMEngine.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\GMEngine.dir\linkLibs.rsp

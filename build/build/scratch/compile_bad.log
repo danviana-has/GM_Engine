@@ -1,0 +1,4 @@
+c:\Users\dvian\Downloads\GM Engine\build\build\scratch\Script_bad.cpp: In function 'void updatePart(void*)':
+c:\Users\dvian\Downloads\GM Engine\build\build\scratch\Script_bad.cpp:3:5: error: invalid use of 'this' in non-member function
+    3 |     this is a syntax error to test log capturing
+      |     ^~~~
