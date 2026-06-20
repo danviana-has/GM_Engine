@@ -25,6 +25,7 @@ public:
     bool openExportOBJPopup = false;
     bool openExportGLTFPopup = false;
     bool openImportPopup = false;
+    bool openPublishPopup = false;
 
     Editor() {
         // Add a default starting log
@@ -115,7 +116,7 @@ public:
         colors[ImGuiCol_DragDropTarget]         = accentBlue;
     }
 
-    void draw(Renderer& renderer, Scene& scene, Physics& physics, float deltaTime, bool& outExportRequested) {
+    void draw(Renderer& renderer, Scene& scene, Physics& physics, float deltaTime, bool& outExportRequested, bool& outPublishRequested, std::string& outPublishTitle, std::string& outPublishDesc) {
         applyRobloxDarkTheme();
 
         // 1. Fullscreen Dockspace
@@ -169,6 +170,9 @@ public:
                 ImGui::Separator();
                 if (ImGui::MenuItem("Export standalone EXE")) {
                     outExportRequested = true;
+                }
+                if (ImGui::MenuItem("Publish to GM Play...")) {
+                    openPublishPopup = true;
                 }
                 ImGui::EndMenu();
             }
@@ -394,6 +398,10 @@ public:
             if (ImGui::Button("Export Game as EXE")) {
                 outExportRequested = true;
             }
+            ImGui::SameLine();
+            if (ImGui::Button("Publish to GM Play")) {
+                openPublishPopup = true;
+            }
         }
         ImGui::End();
 
@@ -546,6 +554,30 @@ public:
                 } else {
                     logMessage("Failed to load 3D model. Check path and model format.", glm::vec4(1.0f, 0.1f, 0.1f, 1.0f));
                 }
+                ImGui::CloseCurrentPopup();
+            }
+            ImGui::SameLine();
+            if (ImGui::Button("Cancel", ImVec2(120, 0))) {
+                ImGui::CloseCurrentPopup();
+            }
+            ImGui::EndPopup();
+        }
+
+        if (openPublishPopup) {
+            ImGui::OpenPopup("Publish to GM Play");
+            openPublishPopup = false;
+        }
+        if (ImGui::BeginPopupModal("Publish to GM Play", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
+            static char titleBuf[128] = "My GM Game";
+            static char descBuf[512] = "A fun physics game built in GM Engine!";
+            ImGui::InputText("Game Title", titleBuf, sizeof(titleBuf));
+            ImGui::InputTextMultiline("Description", descBuf, sizeof(descBuf), ImVec2(350, ImGui::GetTextLineHeight() * 4));
+            
+            ImGui::Separator();
+            if (ImGui::Button("Publish", ImVec2(120, 0))) {
+                outPublishTitle = std::string(titleBuf);
+                outPublishDesc = std::string(descBuf);
+                outPublishRequested = true;
                 ImGui::CloseCurrentPopup();
             }
             ImGui::SameLine();

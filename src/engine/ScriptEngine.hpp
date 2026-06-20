@@ -5,24 +5,10 @@
 #include <map>
 #include <sstream>
 
-class ScriptEngine {
-public:
-    // Stateful tracking for moving objects
-    static inline std::map<int, bool> pingpongDirection; // true = towards P1, false = towards P2
-    static inline bool victoryTriggered = false;
-    static inline bool playerNeedsRespawn = false;
-    static inline glm::vec3 currentCheckpoint = glm::vec3(0.0f, 6.0f, 0.0f);
-    static inline bool hasCheckpoint = false;
-    static inline std::string consoleMsg = "";
+#include "ScriptState.hpp"
 
-    static void reset() {
-        pingpongDirection.clear();
-        victoryTriggered = false;
-        playerNeedsRespawn = false;
-        currentCheckpoint = glm::vec3(0.0f, 6.0f, 0.0f);
-        hasCheckpoint = false;
-        consoleMsg = "";
-    }
+class ScriptEngine : public ScriptState {
+public:
 
     static bool checkAABBOverlap(const std::shared_ptr<Part>& a, const std::shared_ptr<Part>& b) {
         glm::vec3 aHalf = a->size * 0.5f;

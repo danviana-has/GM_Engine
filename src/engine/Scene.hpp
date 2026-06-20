@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Part.hpp"
+#include "GuiElement.hpp"
 
 class Scene {
 private:
@@ -8,6 +9,8 @@ private:
 
 public:
     std::vector<std::shared_ptr<Part>> workspace;
+    std::vector<std::shared_ptr<GuiElement>> starterGui;
+    int nextGuiId = 1;
     
     // Lighting & Environment settings
     glm::vec3 ambientColor;
@@ -25,7 +28,9 @@ public:
 
     void reset() {
         workspace.clear();
+        starterGui.clear();
         nextId = 1;
+        nextGuiId = 1;
         
         // Add a default Baseplate like Roblox Studio
         auto baseplate = addPart(PartShape::Block);
@@ -73,6 +78,41 @@ public:
         return nullptr;
     }
 
+    std::shared_ptr<GuiElement> addGuiElement(GuiElementType type, const std::string& name = "") {
+        std::string defaultName = "GuiElement";
+        switch (type) {
+            case GuiElementType::ScreenGui: defaultName = "ScreenGui"; break;
+            case GuiElementType::Frame: defaultName = "Frame"; break;
+            case GuiElementType::TextLabel: defaultName = "TextLabel"; break;
+            case GuiElementType::TextButton: defaultName = "TextButton"; break;
+        }
+        std::string finalName = name.empty() ? defaultName : name;
+        auto elem = std::make_shared<GuiElement>(nextGuiId++, finalName, type);
+        starterGui.push_back(elem);
+        return elem;
+    }
+
+    void removeGuiElement(int id) {
+        starterGui.erase(
+            std::remove_if(starterGui.begin(), starterGui.end(), 
+                [id](const std::shared_ptr<GuiElement>& g) { return g->id == id; }),
+            starterGui.end()
+        );
+        // Also remove children parented to this element
+        starterGui.erase(
+            std::remove_if(starterGui.begin(), starterGui.end(), 
+                [id](const std::shared_ptr<GuiElement>& g) { return g->parentId == id; }),
+            starterGui.end()
+        );
+    }
+
+    std::shared_ptr<GuiElement> findGuiElement(int id) {
+        for (const auto& elem : starterGui) {
+            if (elem->id == id) return elem;
+        }
+        return nullptr;
+    }
+
     std::string serializeToString() const {
         nlohmann::json j;
         
@@ -89,6 +129,13 @@ public:
         }
         j["workspace"] = partsJson;
         
+        // GUI elements array
+        nlohmann::json guiJson = nlohmann::json::array();
+        for (const auto& elem : starterGui) {
+            guiJson.push_back(elem->toJson());
+        }
+        j["starterGui"] = guiJson;
+        
         return j.dump(4);
     }
 
@@ -97,6 +144,7 @@ public:
             nlohmann::json j = nlohmann::json::parse(data);
             
             workspace.clear();
+            starterGui.clear();
             
             if (j.contains("ambientColor")) {
                 ambientColor = glm::vec3(j["ambientColor"][0], j["ambientColor"][1], j["ambientColor"][2]);
@@ -120,6 +168,20 @@ public:
                 }
             }
             nextId = maxId + 1;
+            
+            int maxGuiId = 0;
+            if (j.contains("starterGui")) {
+                for (const auto& guiJson : j["starterGui"]) {
+                    auto elem = std::make_shared<GuiElement>(0, "", GuiElementType::ScreenGui);
+                    elem->fromJson(guiJson);
+                    starterGui.push_back(elem);
+                    if (elem->id > maxGuiId) {
+                        maxGuiId = elem->id;
+                    }
+                }
+            }
+            nextGuiId = maxGuiId + 1;
+            
             return true;
         } catch (const std::exception& e) {
             std::cerr << "Deserialization error: " << e.what() << std::endl;

@@ -21,7 +21,7 @@ struct PartState {
 };
 
 class CppCompiler {
-private:
+public:
     static std::string getProjectRoot() {
         char path[MAX_PATH];
         GetModuleFileNameA(NULL, path, MAX_PATH);

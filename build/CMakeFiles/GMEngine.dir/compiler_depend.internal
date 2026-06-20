@@ -739,12 +739,14 @@ CMakeFiles/GMEngine.dir/src/main.cpp.obj
  C:/Users/dvian/Downloads/GM Engine/src/editor/Viewport.hpp
  C:/Users/dvian/Downloads/GM Engine/src/engine/Common.hpp
  C:/Users/dvian/Downloads/GM Engine/src/engine/CppCompiler.hpp
+ C:/Users/dvian/Downloads/GM Engine/src/engine/GuiElement.hpp
  C:/Users/dvian/Downloads/GM Engine/src/engine/MeshImporter.hpp
  C:/Users/dvian/Downloads/GM Engine/src/engine/Part.hpp
  C:/Users/dvian/Downloads/GM Engine/src/engine/Physics.hpp
  C:/Users/dvian/Downloads/GM Engine/src/engine/Renderer.hpp
  C:/Users/dvian/Downloads/GM Engine/src/engine/Scene.hpp
  C:/Users/dvian/Downloads/GM Engine/src/engine/ScriptEngine.hpp
+ C:/Users/dvian/Downloads/GM Engine/src/engine/ScriptState.hpp
  C:/Users/dvian/Downloads/GM Engine/src/player/Player.hpp
 
 CMakeFiles/GMEngine.dir/thirdparty/glad/src/glad.c.obj

@@ -13,6 +13,8 @@
 #include <imgui_impl_opengl3.h>
 #include <windows.h>
 #include <ImGuizmo.h>
+#include <iomanip>
+#include <cctype>
 
 std::string checkEmbeddedScene() {
     char path[MAX_PATH];
@@ -50,6 +52,109 @@ bool exportToExe(const Scene& scene, const std::string& outputPath) {
     dst << "//GM_" << "SCENE_START//";
     dst << scene.serializeToString();
     
+    return true;
+}
+
+bool publishToGMPlay(const Scene& scene, const std::string& title, const std::string& description) {
+    std::string root = CppCompiler::getProjectRoot();
+    std::string gmplayDir = root + "\\gmplay";
+    std::string gamesDir = root + "\\gmplay\\games";
+    
+    // Ensure directories exist using absolute canonical paths
+    CreateDirectoryA(gmplayDir.c_str(), NULL);
+    CreateDirectoryA(gamesDir.c_str(), NULL);
+
+    // Sanitize title for filename
+    std::string safeTitle = "";
+    for (char c : title) {
+        if (std::isalnum(c)) {
+            safeTitle += std::tolower(c);
+        } else if (c == ' ') {
+            safeTitle += '_';
+        }
+    }
+    if (safeTitle.empty()) safeTitle = "game";
+    
+    std::string binaryRelativePath = "games/" + safeTitle + ".exe";
+    std::string binaryFullPath = gamesDir + "\\" + safeTitle + ".exe";
+    std::string dbJsonPath = gmplayDir + "\\games.json";
+    std::string dbJsPath = gmplayDir + "\\games.js";
+
+    // Duplicate current exe and append scene payload
+    char path[MAX_PATH];
+    GetModuleFileNameA(NULL, path, MAX_PATH);
+    
+    std::ifstream src(path, std::ios::binary);
+    if (!src.is_open()) return false;
+    
+    std::ofstream dst(binaryFullPath, std::ios::binary);
+    if (!dst.is_open()) return false;
+    
+    dst << src.rdbuf();
+    
+    dst << "//GM_" << "SCENE_START//";
+    dst << scene.serializeToString();
+    dst.close();
+    src.close();
+
+    // Update games.json registry
+    nlohmann::json gamesList = nlohmann::json::array();
+    std::ifstream dbIn(dbJsonPath);
+    if (dbIn.is_open()) {
+        try {
+            dbIn >> gamesList;
+        } catch (...) {
+            // start fresh if corrupted
+        }
+        dbIn.close();
+    }
+
+    bool found = false;
+    for (auto& entry : gamesList) {
+        if (entry.contains("title") && entry["title"] == title) {
+            entry["description"] = description;
+            entry["binary"] = binaryRelativePath;
+            
+            std::ifstream test(binaryFullPath, std::ios::binary | std::ios::ate);
+            double sizeMB = test.is_open() ? (double)test.tellg() / (1024.0 * 1024.0) : 5.1;
+            std::stringstream ss;
+            ss << std::fixed << std::setprecision(1) << sizeMB << " MB";
+            entry["fileSize"] = ss.str();
+            found = true;
+            break;
+        }
+    }
+
+    if (!found) {
+        nlohmann::json newEntry;
+        newEntry["id"] = "game_" + std::to_string(std::hash<std::string>{}(title) % 1000000);
+        newEntry["title"] = title;
+        newEntry["description"] = description;
+        newEntry["binary"] = binaryRelativePath;
+        newEntry["date"] = "2026-06-20";
+        
+        std::ifstream test(binaryFullPath, std::ios::binary | std::ios::ate);
+        double sizeMB = test.is_open() ? (double)test.tellg() / (1024.0 * 1024.0) : 5.1;
+        std::stringstream ss;
+        ss << std::fixed << std::setprecision(1) << sizeMB << " MB";
+        newEntry["fileSize"] = ss.str();
+        
+        gamesList.push_back(newEntry);
+    }
+
+    // Write back games.json
+    std::ofstream dbOut(dbJsonPath);
+    if (!dbOut.is_open()) return false;
+    dbOut << gamesList.dump(4);
+    dbOut.close();
+
+    // Export games.js containing the global variable for browser compatibility (bypasses CORS)
+    std::ofstream jsOut(dbJsPath);
+    if (jsOut.is_open()) {
+        jsOut << "var gmPlayGames = " << gamesList.dump(4) << ";\n";
+        jsOut.close();
+    }
+
     return true;
 }
 
@@ -122,17 +227,19 @@ int main(int argc, char* argv[]) {
     Editor* editor = nullptr;
     Player* player = nullptr;
 
+    // Setup ImGui
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
     if (!playMode) {
-        // Setup ImGui
-        IMGUI_CHECKVERSION();
-        ImGui::CreateContext();
-        ImGuiIO& io = ImGui::GetIO(); (void)io;
-        io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
         io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+    }
 
-        ImGui_ImplGlfw_InitForOpenGL(window, true);
-        ImGui_ImplOpenGL3_Init("#version 330");
+    ImGui_ImplGlfw_InitForOpenGL(window, true);
+    ImGui_ImplOpenGL3_Init("#version 330");
 
+    if (!playMode) {
         editor = new Editor();
     } else {
         player = new Player();
@@ -155,6 +262,27 @@ int main(int argc, char* argv[]) {
             physics.update(scene, deltaTime);
             player->runFrame(window, renderer, scene, physics, deltaTime);
             
+            // Render HUD overlay
+            ImGui_ImplOpenGL3_NewFrame();
+            ImGui_ImplGlfw_NewFrame();
+            ImGui::NewFrame();
+            
+            int width, height;
+            glfwGetFramebufferSize(window, &width, &height);
+            ImGui::SetNextWindowPos(ImVec2(0, 0));
+            ImGui::SetNextWindowSize(ImVec2(width, height));
+            ImGui::Begin("StandaloneHUD", nullptr, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_NoNav);
+            
+            for (const auto& elem : scene.starterGui) {
+                if (elem->parentId == -1) {
+                    GuiElement::drawElement(scene.starterGui, elem, 0.0f, 0.0f, (float)width, (float)height, true);
+                }
+            }
+            
+            ImGui::End();
+            ImGui::Render();
+            ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+            
             // Allow exiting playmode with ESC
             if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
                 glfwSetWindowShouldClose(window, true);
@@ -173,7 +301,11 @@ int main(int argc, char* argv[]) {
             ImGuizmo::BeginFrame();
 
             bool exportRequested = false;
-            editor->draw(renderer, scene, physics, deltaTime, exportRequested);
+            bool publishRequested = false;
+            std::string publishTitle = "";
+            std::string publishDescription = "";
+            
+            editor->draw(renderer, scene, physics, deltaTime, exportRequested, publishRequested, publishTitle, publishDescription);
 
             if (exportRequested) {
                 std::string outPath = "MyGame.exe";
@@ -181,6 +313,14 @@ int main(int argc, char* argv[]) {
                     editor->logMessage("Standalone game compiled successfully: " + outPath, glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
                 } else {
                     editor->logMessage("Failed to compile standalone game.", glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
+                }
+            }
+
+            if (publishRequested) {
+                if (publishToGMPlay(scene, publishTitle, publishDescription)) {
+                    editor->logMessage("Successfully published '" + publishTitle + "' to GM Play!", glm::vec4(0.0f, 1.0f, 0.5f, 1.0f));
+                } else {
+                    editor->logMessage("Failed to publish game to GM Play.", glm::vec4(1.0f, 0.1f, 0.1f, 1.0f));
                 }
             }
 
@@ -198,10 +338,12 @@ int main(int argc, char* argv[]) {
     }
 
     // 9. Cleanup
+    // Cleanup ImGui
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
+
     if (!playMode) {
-        ImGui_ImplOpenGL3_Shutdown();
-        ImGui_ImplGlfw_Shutdown();
-        ImGui::DestroyContext();
         delete editor;
     } else {
         physics.unloadAllCppScripts();

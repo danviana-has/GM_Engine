@@ -3,6 +3,7 @@
 #include "Common.hpp"
 #include "Scene.hpp"
 #include <imgui.h>
+#include <functional>
 
 class Explorer {
 public:
@@ -109,6 +110,107 @@ public:
                 if (ImGui::IsItemClicked()) {
                     selectedId = -99; // Special ID for Lighting properties
                 }
+            }
+
+            // StarterGui Node
+            bool guiOpen = ImGui::TreeNodeEx("StarterGui", ImGuiTreeNodeFlags_DefaultOpen);
+            
+            // Context menu on StarterGui root node (right click to insert ScreenGui)
+            if (ImGui::BeginPopupContextItem("StarterGuiContextMenu")) {
+                if (ImGui::MenuItem("Insert ScreenGui")) {
+                    auto g = scene.addGuiElement(GuiElementType::ScreenGui);
+                    selectedId = -100 - g->id;
+                }
+                ImGui::EndPopup();
+            }
+            
+            if (guiOpen) {
+                // List GUI elements hierarchically
+                // Helper to render GUI element node recursively
+                std::function<void(std::shared_ptr<GuiElement>)> renderGuiNode = [&](std::shared_ptr<GuiElement> elem) {
+                    bool hasChildren = false;
+                    for (const auto& g : scene.starterGui) {
+                        if (g->parentId == elem->id) {
+                            hasChildren = true;
+                            break;
+                        }
+                    }
+                    
+                    ImGuiTreeNodeFlags nodeFlags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick;
+                    if (!hasChildren) {
+                        nodeFlags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen;
+                    }
+                    if ((-100 - elem->id) == selectedId) {
+                        nodeFlags |= ImGuiTreeNodeFlags_Selected;
+                    }
+                    
+                    bool nodeOpen = ImGui::TreeNodeEx((void*)(intptr_t)(-100 - elem->id), nodeFlags, "%s", elem->name.c_str());
+                    
+                    if (ImGui::IsItemClicked()) {
+                        selectedId = -100 - elem->id;
+                    }
+                    
+                    // Context Menu for each GuiElement
+                    std::string popupId = "GuiContextMenu_" + std::to_string(elem->id);
+                    if (ImGui::BeginPopupContextItem(popupId.c_str())) {
+                        selectedId = -100 - elem->id;
+                        
+                        if (elem->type == GuiElementType::ScreenGui) {
+                            if (ImGui::MenuItem("Insert Frame")) {
+                                auto g = scene.addGuiElement(GuiElementType::Frame);
+                                g->parentId = elem->id;
+                                selectedId = -100 - g->id;
+                            }
+                            if (ImGui::MenuItem("Insert TextLabel")) {
+                                auto g = scene.addGuiElement(GuiElementType::TextLabel);
+                                g->parentId = elem->id;
+                                selectedId = -100 - g->id;
+                            }
+                            if (ImGui::MenuItem("Insert TextButton")) {
+                                auto g = scene.addGuiElement(GuiElementType::TextButton);
+                                g->parentId = elem->id;
+                                selectedId = -100 - g->id;
+                            }
+                        } else if (elem->type == GuiElementType::Frame) {
+                            if (ImGui::MenuItem("Insert TextLabel")) {
+                                auto g = scene.addGuiElement(GuiElementType::TextLabel);
+                                g->parentId = elem->id;
+                                selectedId = -100 - g->id;
+                            }
+                            if (ImGui::MenuItem("Insert TextButton")) {
+                                auto g = scene.addGuiElement(GuiElementType::TextButton);
+                                g->parentId = elem->id;
+                                selectedId = -100 - g->id;
+                            }
+                        }
+                        
+                        if (ImGui::MenuItem("Delete")) {
+                            scene.removeGuiElement(elem->id);
+                            if (selectedId == (-100 - elem->id)) {
+                                selectedId = -1;
+                            }
+                        }
+                        ImGui::EndPopup();
+                    }
+                    
+                    if (hasChildren && nodeOpen) {
+                        for (const auto& g : scene.starterGui) {
+                            if (g->parentId == elem->id) {
+                                renderGuiNode(g);
+                            }
+                        }
+                        ImGui::TreePop();
+                    }
+                };
+                
+                // Print all top-level GUI elements
+                for (const auto& g : scene.starterGui) {
+                    if (g->parentId == -1) {
+                        renderGuiNode(g);
+                    }
+                }
+                
+                ImGui::TreePop();
             }
 
             ImGui::TreePop();

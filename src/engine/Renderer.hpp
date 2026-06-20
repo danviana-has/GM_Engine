@@ -4,6 +4,7 @@
 #include "Scene.hpp"
 #include "MeshImporter.hpp"
 #include <glad/glad.h>
+#include <GLFW/glfw3.h>
 
 class Renderer {
 public:
@@ -112,6 +113,92 @@ public:
         glUniform3fv(glGetUniformLocation(shaderProgram, "uSunDirection"), 1, glm::value_ptr(scene.sunDirection));
         
         for (const auto& part : scene.workspace) {
+            if (part->isPlayer) {
+                // Render detailed humanoid character model with swing walking animation
+                float speed = glm::length(glm::vec2(part->velocity.x, part->velocity.z));
+                float swingAngle = 0.0f;
+                if (speed > 0.5f) {
+                    float time = static_cast<float>(glfwGetTime());
+                    swingAngle = std::sin(time * 12.0f) * 35.0f;
+                }
+                
+                glm::mat4 baseModel = glm::mat4(1.0f);
+                baseModel = glm::translate(baseModel, part->position);
+                baseModel = glm::rotate(baseModel, glm::radians(part->rotation.x), glm::vec3(1, 0, 0));
+                baseModel = glm::rotate(baseModel, glm::radians(part->rotation.y), glm::vec3(0, 1, 0));
+                baseModel = glm::rotate(baseModel, glm::radians(part->rotation.z), glm::vec3(0, 0, 1));
+                
+                // Colors
+                glm::vec4 skinColor = glm::vec4(1.0f, 0.8f, 0.65f, 1.0f);
+                glm::vec4 torsoColor = part->color; // Shirt color matches player's core color
+                glm::vec4 pantsColor = glm::vec4(0.12f, 0.22f, 0.44f, 1.0f); // Blue jeans
+                glm::vec4 eyeColor = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f); // Black eyes
+                glm::vec4 mouthColor = glm::vec4(0.6f, 0.2f, 0.2f, 1.0f); // Red mouth
+                
+                auto drawCharBlock = [&](const glm::mat4& mat, const glm::vec4& col, PartMaterial matType) {
+                    glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "uModel"), 1, GL_FALSE, glm::value_ptr(mat));
+                    glUniform4fv(glGetUniformLocation(shaderProgram, "uColor"), 1, glm::value_ptr(col));
+                    glUniform1i(glGetUniformLocation(shaderProgram, "uMaterialType"), static_cast<int>(matType));
+                    glUniform1f(glGetUniformLocation(shaderProgram, "uReflectance"), 0.0f);
+                    glBindVertexArray(cubeVAO);
+                    glDrawArrays(GL_TRIANGLES, 0, 36);
+                };
+                
+                // 1. Torso
+                glm::mat4 torsoMat = glm::translate(baseModel, glm::vec3(0.0f, 0.1f, 0.0f));
+                torsoMat = glm::scale(torsoMat, glm::vec3(0.9f, 1.6f, 0.5f));
+                drawCharBlock(torsoMat, torsoColor, part->material);
+                
+                // 2. Head
+                glm::mat4 headMat = glm::translate(baseModel, glm::vec3(0.0f, 1.35f, 0.0f));
+                headMat = glm::scale(headMat, glm::vec3(0.8f, 0.8f, 0.8f));
+                drawCharBlock(headMat, skinColor, PartMaterial::Plastic);
+                
+                // 3. Eyes
+                glm::mat4 leftEye = glm::translate(baseModel, glm::vec3(-0.18f, 1.45f, -0.41f));
+                leftEye = glm::scale(leftEye, glm::vec3(0.1f, 0.1f, 0.02f));
+                drawCharBlock(leftEye, eyeColor, PartMaterial::Plastic);
+                
+                glm::mat4 rightEye = glm::translate(baseModel, glm::vec3(0.18f, 1.45f, -0.41f));
+                rightEye = glm::scale(rightEye, glm::vec3(0.1f, 0.1f, 0.02f));
+                drawCharBlock(rightEye, eyeColor, PartMaterial::Plastic);
+                
+                // 4. Mouth
+                glm::mat4 mouth = glm::translate(baseModel, glm::vec3(0.0f, 1.2f, -0.41f));
+                mouth = glm::scale(mouth, glm::vec3(0.2f, 0.08f, 0.02f));
+                drawCharBlock(mouth, mouthColor, PartMaterial::Plastic);
+                
+                // 5. Left Leg
+                glm::mat4 leftLeg = glm::translate(baseModel, glm::vec3(-0.25f, -0.7f, 0.0f));
+                leftLeg = glm::rotate(leftLeg, glm::radians(swingAngle), glm::vec3(1, 0, 0));
+                leftLeg = glm::translate(leftLeg, glm::vec3(0.0f, -0.65f, 0.0f));
+                leftLeg = glm::scale(leftLeg, glm::vec3(0.4f, 1.3f, 0.4f));
+                drawCharBlock(leftLeg, pantsColor, PartMaterial::Plastic);
+                
+                // 6. Right Leg
+                glm::mat4 rightLeg = glm::translate(baseModel, glm::vec3(0.25f, -0.7f, 0.0f));
+                rightLeg = glm::rotate(rightLeg, glm::radians(-swingAngle), glm::vec3(1, 0, 0));
+                rightLeg = glm::translate(rightLeg, glm::vec3(0.0f, -0.65f, 0.0f));
+                rightLeg = glm::scale(rightLeg, glm::vec3(0.4f, 1.3f, 0.4f));
+                drawCharBlock(rightLeg, pantsColor, PartMaterial::Plastic);
+                
+                // 7. Left Arm
+                glm::mat4 leftArm = glm::translate(baseModel, glm::vec3(-0.65f, 0.8f, 0.0f));
+                leftArm = glm::rotate(leftArm, glm::radians(-swingAngle), glm::vec3(1, 0, 0));
+                leftArm = glm::translate(leftArm, glm::vec3(0.0f, -0.65f, 0.0f));
+                leftArm = glm::scale(leftArm, glm::vec3(0.35f, 1.3f, 0.35f));
+                drawCharBlock(leftArm, skinColor, PartMaterial::Plastic);
+                
+                // 8. Right Arm
+                glm::mat4 rightArm = glm::translate(baseModel, glm::vec3(0.65f, 0.8f, 0.0f));
+                rightArm = glm::rotate(rightArm, glm::radians(swingAngle), glm::vec3(1, 0, 0));
+                rightArm = glm::translate(rightArm, glm::vec3(0.0f, -0.65f, 0.0f));
+                rightArm = glm::scale(rightArm, glm::vec3(0.35f, 1.3f, 0.35f));
+                drawCharBlock(rightArm, skinColor, PartMaterial::Plastic);
+                
+                continue;
+            }
+
             glm::mat4 model = part->getModelMatrix();
             glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "uModel"), 1, GL_FALSE, glm::value_ptr(model));
             

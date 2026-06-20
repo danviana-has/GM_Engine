@@ -124,6 +124,21 @@ public:
             ImVec2(1, 0)
         );
 
+        // 3. Draw Roblox-style StarterGui overlays
+        ImVec2 imagePos = ImGui::GetItemRectMin();
+        ImVec2 imageSize = ImGui::GetItemRectSize();
+        ImGui::SetCursorScreenPos(imagePos);
+        ImGui::BeginChild("StarterGuiCanvas", imageSize, ImGuiChildFlags_None, 
+                          ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_NoNav);
+        {
+            for (const auto& elem : scene.starterGui) {
+                if (elem->parentId == -1) {
+                    GuiElement::drawElement(scene.starterGui, elem, imagePos.x, imagePos.y, imageSize.x, imageSize.y, isPlaying);
+                }
+            }
+        }
+        ImGui::EndChild();
+
         // Capture Inputs if viewport window is hovered/active
         bool hovered = ImGui::IsWindowHovered();
         ImGuiIO& io = ImGui::GetIO();

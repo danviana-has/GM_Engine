@@ -472,15 +472,19 @@ CMakeFiles/GMEngine.dir/src/main.cpp.obj: \
  C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/any \
  C:\Users\dvian\Downloads\GM\ Engine\src\engine/Scene.hpp \
  C:\Users\dvian\Downloads\GM\ Engine\src\engine/Part.hpp \
+ C:\Users\dvian\Downloads\GM\ Engine\src\engine/GuiElement.hpp \
+ C:/Users/dvian/DOWNLO~1/GMENGI~1/THIRDP~1/imgui/imgui.h \
+ C:/Users/dvian/DOWNLO~1/GMENGI~1/THIRDP~1/imgui/imconfig.h \
+ C:/Users/Public/GMEngineTools/mingw64/lib/gcc/x86_64-w64-mingw32/16.1.0/include/stdarg.h \
+ C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/stdarg.h \
+ C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/_mingw_stdarg.h \
+ C:\Users\dvian\Downloads\GM\ Engine\src\engine/ScriptState.hpp \
  C:\Users\dvian\Downloads\GM\ Engine\src\engine/Physics.hpp \
  C:\Users\dvian\Downloads\GM\ Engine\src\engine/ScriptEngine.hpp \
  C:\Users\dvian\Downloads\GM\ Engine\src\engine/CppCompiler.hpp \
  C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/windows.h \
  C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/sdkddkver.h \
  C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/excpt.h \
- C:/Users/Public/GMEngineTools/mingw64/lib/gcc/x86_64-w64-mingw32/16.1.0/include/stdarg.h \
- C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/stdarg.h \
- C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/_mingw_stdarg.h \
  C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/windef.h \
  C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/winapifamily.h \
  C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/minwindef.h \
@@ -741,15 +745,13 @@ CMakeFiles/GMEngine.dir/src/main.cpp.obj: \
  C:\Users\dvian\Downloads\GM\ Engine\src\engine/MeshImporter.hpp \
  C:/Users/dvian/DOWNLO~1/GMENGI~1/THIRDP~1/glad/include/glad/glad.h \
  C:/Users/dvian/DOWNLO~1/GMENGI~1/THIRDP~1/glad/include/KHR/khrplatform.h \
+ C:/Users/dvian/DOWNLO~1/GMENGI~1/THIRDP~1/glfw/include/GLFW/glfw3.h \
  C:\Users\dvian\Downloads\GM\ Engine\src\editor/Editor.hpp \
  C:\Users\dvian\Downloads\GM\ Engine\src\editor/Viewport.hpp \
- C:/Users/dvian/DOWNLO~1/GMENGI~1/THIRDP~1/imgui/imgui.h \
- C:/Users/dvian/DOWNLO~1/GMENGI~1/THIRDP~1/imgui/imconfig.h \
  C:/Users/dvian/DOWNLO~1/GMENGI~1/THIRDP~1/imguizmo/ImGuizmo.h \
  C:\Users\dvian\Downloads\GM\ Engine\src\editor/Explorer.hpp \
  C:\Users\dvian\Downloads\GM\ Engine\src\editor/Properties.hpp \
  C:/Users/dvian/Downloads/GM\ Engine/src/engine/ModelExporter.hpp \
  C:\Users\dvian\Downloads\GM\ Engine\src\player/Player.hpp \
- C:/Users/dvian/DOWNLO~1/GMENGI~1/THIRDP~1/glfw/include/GLFW/glfw3.h \
  C:/Users/dvian/DOWNLO~1/GMENGI~1/THIRDP~1/imgui/backends/imgui_impl_glfw.h \
  C:/Users/dvian/DOWNLO~1/GMENGI~1/THIRDP~1/imgui/backends/imgui_impl_opengl3.h

@@ -14,6 +14,64 @@ public:
         if (selectedId == -1) {
             ImGui::Text("Select an object to view its properties.");
         } 
+        else if (selectedId <= -100) {
+            // Draw properties for Selected GUI Element!
+            int guiId = -selectedId - 100;
+            auto elem = scene.findGuiElement(guiId);
+            if (elem) {
+                ImGui::TextDisabled("%s (ID: %d)", GuiElement::TypeToString(elem->type).c_str(), elem->id);
+                ImGui::Separator();
+                
+                // Name
+                char nameBuf[128];
+                strcpy(nameBuf, elem->name.c_str());
+                if (ImGui::InputText("Name", nameBuf, sizeof(nameBuf))) {
+                    elem->name = std::string(nameBuf);
+                }
+                
+                ImGui::Checkbox("Visible", &elem->visible);
+                
+                ImGui::Spacing();
+                if (ImGui::CollapsingHeader("Transform (UDim2 Layout)", ImGuiTreeNodeFlags_DefaultOpen)) {
+                    ImGui::Text("Position (Scale, Offset Offset):");
+                    ImGui::DragFloat2("Pos X (Scale/Offset)", &elem->posXScale, 0.01f);
+                    ImGui::DragFloat2("Pos Y (Scale/Offset)", &elem->posYScale, 0.01f);
+                    
+                    ImGui::Text("Size (Scale, Offset Offset):");
+                    ImGui::DragFloat2("Size X (Scale/Offset)", &elem->sizeXScale, 0.01f);
+                    ImGui::DragFloat2("Size Y (Scale/Offset)", &elem->sizeYScale, 0.01f);
+                }
+                
+                ImGui::Spacing();
+                if (ImGui::CollapsingHeader("Appearance", ImGuiTreeNodeFlags_DefaultOpen)) {
+                    if (elem->type != GuiElementType::ScreenGui) {
+                        ImGui::ColorEdit4("Background Color", glm::value_ptr(elem->backgroundColor));
+                    }
+                    
+                    if (elem->type == GuiElementType::TextLabel || elem->type == GuiElementType::TextButton) {
+                        ImGui::ColorEdit4("Text Color", glm::value_ptr(elem->textColor));
+                        char textBuf[512];
+                        strcpy(textBuf, elem->text.c_str());
+                        if (ImGui::InputText("Text", textBuf, sizeof(textBuf))) {
+                            elem->text = std::string(textBuf);
+                        }
+                    }
+                }
+                
+                if (elem->type == GuiElementType::TextButton) {
+                    ImGui::Spacing();
+                    if (ImGui::CollapsingHeader("Click Actions", ImGuiTreeNodeFlags_DefaultOpen)) {
+                        char scriptBuf[512];
+                        strcpy(scriptBuf, elem->script.c_str());
+                        if (ImGui::InputText("Command script", scriptBuf, sizeof(scriptBuf))) {
+                            elem->script = std::string(scriptBuf);
+                        }
+                        ImGui::TextDisabled("Commands:");
+                        ImGui::TextDisabled("  print [message] | teleport [x y z]");
+                    }
+                }
+            }
+        }
         else if (selectedId == -99) {
             // Lighting properties
             ImGui::TextDisabled("Lighting Properties");

@@ -738,12 +738,14 @@ CMakeFiles/GMEngine.dir/src/main.cpp.obj: C:/Users/dvian/Downloads/GM\ Engine/sr
   C:/Users/dvian/Downloads/GM\ Engine/src/editor/Viewport.hpp \
   C:/Users/dvian/Downloads/GM\ Engine/src/engine/Common.hpp \
   C:/Users/dvian/Downloads/GM\ Engine/src/engine/CppCompiler.hpp \
+  C:/Users/dvian/Downloads/GM\ Engine/src/engine/GuiElement.hpp \
   C:/Users/dvian/Downloads/GM\ Engine/src/engine/MeshImporter.hpp \
   C:/Users/dvian/Downloads/GM\ Engine/src/engine/Part.hpp \
   C:/Users/dvian/Downloads/GM\ Engine/src/engine/Physics.hpp \
   C:/Users/dvian/Downloads/GM\ Engine/src/engine/Renderer.hpp \
   C:/Users/dvian/Downloads/GM\ Engine/src/engine/Scene.hpp \
   C:/Users/dvian/Downloads/GM\ Engine/src/engine/ScriptEngine.hpp \
+  C:/Users/dvian/Downloads/GM\ Engine/src/engine/ScriptState.hpp \
   C:/Users/dvian/Downloads/GM\ Engine/src/player/Player.hpp
 
 CMakeFiles/GMEngine.dir/thirdparty/glad/src/glad.c.obj: C:/Users/dvian/Downloads/GM\ Engine/thirdparty/glad/src/glad.c \
@@ -3377,6 +3379,8 @@ C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/x86_64-w64-mingw32/bits
 
 C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/securitybaseapi.h:
 
+C:/Users/dvian/Downloads/GM\ Engine/src/engine/ScriptState.hpp:
+
 C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/x86_64-w64-mingw32/bits/error_constants.h:
 
 C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/x86_64-w64-mingw32/bits/gthr-default.h:
@@ -3876,6 +3880,8 @@ C:/Users/dvian/Downloads/GM\ Engine/thirdparty/glm/glm/ext/matrix_clip_space.inl
 C:/Users/dvian/Downloads/GM\ Engine/thirdparty/glm/glm/ext/vector_float2.hpp:
 
 C:/Users/dvian/Downloads/GM\ Engine/thirdparty/glad/src/glad.c:
+
+C:/Users/dvian/Downloads/GM\ Engine/src/engine/GuiElement.hpp:
 
 C:/Users/dvian/Downloads/GM\ Engine/thirdparty/glm/glm/ext/vector_float2_precision.hpp:
 
