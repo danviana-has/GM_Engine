@@ -3,6 +3,7 @@
 #include "engine/Physics.hpp"
 #include "engine/Renderer.hpp"
 #include "engine/ScriptEngine.hpp"
+#include "engine/Platform.hpp"
 #include "editor/Editor.hpp"
 #include "player/Player.hpp"
 
@@ -11,12 +12,15 @@
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
+#ifdef _WIN32
 #include <windows.h>
+#endif
 #include <ImGuizmo.h>
 #include <iomanip>
 #include <cctype>
 
 std::string checkEmbeddedScene() {
+#ifdef _WIN32
     char path[MAX_PATH];
     GetModuleFileNameA(NULL, path, MAX_PATH);
     std::ifstream file(path, std::ios::binary);
@@ -32,8 +36,12 @@ std::string checkEmbeddedScene() {
         return content.substr(pos + marker.length());
     }
     return "";
+#else
+    return "";
+#endif
 }
 
+#ifdef _WIN32
 bool exportToExe(const Scene& scene, const std::string& outputPath) {
     char path[MAX_PATH];
     GetModuleFileNameA(NULL, path, MAX_PATH);
@@ -55,7 +63,7 @@ bool exportToExe(const Scene& scene, const std::string& outputPath) {
     return true;
 }
 
-bool publishToGMPlay(const Scene& scene, const std::string& title, const std::string& description) {
+bool publishToGMPlay(const Scene& scene, const std::string& title, const std::string& description, std::string& outMessage) {
     std::string root = CppCompiler::getProjectRoot();
     std::string gmplayDir = root + "\\gmplay";
     std::string gamesDir = root + "\\gmplay\\games";
@@ -85,10 +93,10 @@ bool publishToGMPlay(const Scene& scene, const std::string& title, const std::st
     GetModuleFileNameA(NULL, path, MAX_PATH);
     
     std::ifstream src(path, std::ios::binary);
-    if (!src.is_open()) return false;
+    if (!src.is_open()) { outMessage = "Failed to read engine executable."; return false; }
     
     std::ofstream dst(binaryFullPath, std::ios::binary);
-    if (!dst.is_open()) return false;
+    if (!dst.is_open()) { outMessage = "Failed to write game binary to: " + binaryFullPath; return false; }
     
     dst << src.rdbuf();
     
@@ -144,7 +152,7 @@ bool publishToGMPlay(const Scene& scene, const std::string& title, const std::st
 
     // Write back games.json
     std::ofstream dbOut(dbJsonPath);
-    if (!dbOut.is_open()) return false;
+    if (!dbOut.is_open()) { outMessage = "Failed to write games.json."; return false; }
     dbOut << gamesList.dump(4);
     dbOut.close();
 
@@ -155,8 +163,75 @@ bool publishToGMPlay(const Scene& scene, const std::string& title, const std::st
         jsOut.close();
     }
 
+    outMessage = "Game '" + title + "' published locally to gmplay/games/" + safeTitle + ".exe\n";
+
+    // --- Auto git push to https://github.com/danviana-has/GM-Play (GitHub Pages) ---
+    const std::string GMPLAY_REMOTE = "https://github.com/danviana-has/GM-Play.git";
+    std::string logPath = root + "\\build\\git_push.log";
+
+    // Helper: run a git command inside gmplayDir, capture combined stdout+stderr
+    auto runGitCmd = [&](const std::string& args) -> std::pair<int, std::string> {
+        std::string cmd = "\"\"git\" -C \"" + gmplayDir + "\" " + args + " > \"" + logPath + "\" 2>&1\"";
+        int ret = std::system(cmd.c_str());
+        std::ifstream lf(logPath);
+        std::stringstream ls;
+        if (lf.is_open()) ls << lf.rdbuf();
+        return { ret, ls.str() };
+    };
+
+    // 1. Init repo inside gmplay/ if not already a git repo
+    std::string gitDirPath = gmplayDir + "\\.git";
+    DWORD gitDirAttr = GetFileAttributesA(gitDirPath.c_str());
+    if (gitDirAttr == INVALID_FILE_ATTRIBUTES) {
+        auto [initRet, initOut] = runGitCmd("init -b main");
+        if (initRet != 0) {
+            outMessage += "[git] Warning: git init failed.\n" + initOut;
+            return true;
+        }
+        outMessage += "[git] Initialized new git repo in gmplay/\n";
+    }
+
+    // 2. Ensure remote 'origin' points to the correct GM-Play repo
+    {
+        std::string checkCmd = "\"\"git\" -C \"" + gmplayDir + "\" remote get-url origin > \"" + logPath + "\" 2>&1\"";
+        int checkRet = std::system(checkCmd.c_str());
+        if (checkRet != 0) {
+            runGitCmd("remote add origin " + GMPLAY_REMOTE);
+            outMessage += "[git] Remote 'origin' set to " + GMPLAY_REMOTE + "\n";
+        } else {
+            runGitCmd("remote set-url origin " + GMPLAY_REMOTE);
+        }
+    }
+
+    // 3. Stage all files in gmplay/
+    auto [addRet, addOut] = runGitCmd("add .");
+    if (addRet != 0) {
+        outMessage += "[git] Warning: git add failed.\n" + addOut;
+        return true;
+    }
+
+    // 4. Commit
+    std::string commitMsg = "GM Play: Publish game - " + title;
+    auto [commitRet, commitOut] = runGitCmd("commit -m \"" + commitMsg + "\"");
+    if (commitRet != 0 && commitOut.find("nothing to commit") == std::string::npos) {
+        outMessage += "[git] Warning: git commit failed.\n" + commitOut;
+        return true;
+    }
+
+    // 5. Push to origin main (--force because engine is the single source of truth)
+    auto [pushRet, pushOut] = runGitCmd("push --force --set-upstream origin main");
+    if (pushRet != 0) {
+        outMessage += "[git] Warning: git push failed. Run manually:\n";
+        outMessage += "  cd gmplay && git push --force --set-upstream origin main\n";
+        outMessage += pushOut;
+    } else {
+        outMessage += "[git] Pushed! GitHub Pages: https://danviana-has.github.io/GM-Play\n";
+        outMessage += "[git] Site updates in ~1 minute.\n";
+    }
+
     return true;
 }
+#endif
 
 int main(int argc, char* argv[]) {
     // 1. Determine Mode
@@ -308,20 +383,43 @@ int main(int argc, char* argv[]) {
             editor->draw(renderer, scene, physics, deltaTime, exportRequested, publishRequested, publishTitle, publishDescription);
 
             if (exportRequested) {
+#ifdef _WIN32
                 std::string outPath = "MyGame.exe";
                 if (exportToExe(scene, outPath)) {
                     editor->logMessage("Standalone game compiled successfully: " + outPath, glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
                 } else {
                     editor->logMessage("Failed to compile standalone game.", glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
                 }
+#else
+                std::string sceneStr = scene.serializeToString();
+                Platform::triggerDownload("scene.gmg", sceneStr);
+                editor->logMessage("Scene file downloaded! Load it using Open Scene.", glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
+#endif
             }
 
             if (publishRequested) {
-                if (publishToGMPlay(scene, publishTitle, publishDescription)) {
-                    editor->logMessage("Successfully published '" + publishTitle + "' to GM Play!", glm::vec4(0.0f, 1.0f, 0.5f, 1.0f));
+#ifdef _WIN32
+                std::string publishMsg;
+                if (publishToGMPlay(scene, publishTitle, publishDescription, publishMsg)) {
+                    // Log each line separately for readability
+                    std::istringstream msgStream(publishMsg);
+                    std::string line;
+                    while (std::getline(msgStream, line)) {
+                        if (!line.empty()) {
+                            bool isGit   = line.rfind("[git]", 0) == 0;
+                            bool isWarn  = line.find("Warning") != std::string::npos || line.find("failed") != std::string::npos;
+                            glm::vec4 col = isGit
+                                ? (isWarn ? glm::vec4(1.0f,0.6f,0.0f,1.0f) : glm::vec4(0.0f,1.0f,0.5f,1.0f))
+                                : glm::vec4(0.0f,1.0f,0.5f,1.0f);
+                            editor->logMessage(line, col);
+                        }
+                    }
                 } else {
-                    editor->logMessage("Failed to publish game to GM Play.", glm::vec4(1.0f, 0.1f, 0.1f, 1.0f));
+                    editor->logMessage("Failed to publish game to GM Play: " + publishMsg, glm::vec4(1.0f, 0.1f, 0.1f, 1.0f));
                 }
+#else
+                editor->logMessage("Publishing is only supported on the Desktop version.", glm::vec4(1.0f, 0.5f, 0.0f, 1.0f));
+#endif
             }
 
             // Render ImGui

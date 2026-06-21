@@ -3,8 +3,10 @@
 #include "Common.hpp"
 #include "Scene.hpp"
 #include <imgui.h>
+#ifdef _WIN32
 #include <windows.h>
 #include <commdlg.h>
+#endif
 
 class Properties {
 public:
@@ -124,6 +126,7 @@ public:
                 }
                 ImGui::SameLine();
                 if (ImGui::Button("Browse...")) {
+#ifdef _WIN32
                     OPENFILENAMEA ofn;
                     char szFile[260] = { 0 };
                     ZeroMemory(&ofn, sizeof(ofn));
@@ -141,6 +144,7 @@ public:
                     if (GetOpenFileNameA(&ofn) == TRUE) {
                         part->meshPath = std::string(ofn.lpstrFile);
                     }
+#endif
                 }
 
                 // Material selection
@@ -204,6 +208,17 @@ public:
                             "    state->rotation[1] += 45.0f * state->dt;\n"
                             "}\n";
                     }
+                    ImGui::SameLine();
+                    if (ImGui::Button("Load C++ Touch-Kill Template")) {
+                        part->script = 
+                            "// C++ Touch-Kill Script: respawn player on contact\n"
+                            "extern \"C\" __declspec(dllexport) void updatePart(PartState* state) {\n"
+                            "    // if this object touches the player, respawn player at last checkpoint\n"
+                            "    if (state->isTouchingPlayer) {\n"
+                            "        state->playerNeedsRespawn = true;\n"
+                            "    }\n"
+                            "}\n";
+                    }
                 }
 
                 char scriptBuf[2048];
@@ -222,6 +237,10 @@ public:
                     ImGui::TextDisabled("  pingpong [x1 y1 z1 x2 y2 z2 speed]");
                 } else {
                     ImGui::TextDisabled("C++ compilation compiles to DLL at play.");
+                    ImGui::TextDisabled("Available fields in state:\n"
+                                        "  dt, position[3], rotation[3], size[3], color[4],\n"
+                                        "  velocity[3], anchored, canCollide, isGrounded,\n"
+                                        "  isTouchingPlayer, playerNeedsRespawn, isColliding");
                     ImGui::TextDisabled("Errors will print to output console.");
                 }
             }

@@ -1,0 +1,3 @@
+C:\Users\Public\GMEngineTools\cmake-3.29.3-windows-x86_64\bin\cmake.exe -E rm -f CMakeFiles\GMPlay.dir/objects.a
+C:\Users\Public\GMEngineTools\mingw64\bin\ar.exe qc CMakeFiles\GMPlay.dir/objects.a @CMakeFiles\GMPlay.dir\objects1.rsp
+C:\Users\Public\GMEngineTools\mingw64\bin\g++.exe -O3 -DNDEBUG -static-libgcc -static-libstdc++ -static -Wl,--whole-archive CMakeFiles\GMPlay.dir/objects.a -Wl,--no-whole-archive -o GMPlay.exe -Wl,--out-implib,libGMPlay.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\GMPlay.dir\linkLibs.rsp

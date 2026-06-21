@@ -128,6 +128,43 @@ GMEngine/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\GMEngine.dir\build.make CMakeFiles/GMEngine.dir/build
 .PHONY : GMEngine/fast
 
+#=============================================================================
+# Target rules for targets named GMPlay
+
+# Build rule for target.
+GMPlay: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 GMPlay
+.PHONY : GMPlay
+
+# fast build rule for target.
+GMPlay/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\GMPlay.dir\build.make CMakeFiles/GMPlay.dir/build
+.PHONY : GMPlay/fast
+
+src/gmplay_app.obj: src/gmplay_app.cpp.obj
+.PHONY : src/gmplay_app.obj
+
+# target to build an object file
+src/gmplay_app.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\GMPlay.dir\build.make CMakeFiles/GMPlay.dir/src/gmplay_app.cpp.obj
+.PHONY : src/gmplay_app.cpp.obj
+
+src/gmplay_app.i: src/gmplay_app.cpp.i
+.PHONY : src/gmplay_app.i
+
+# target to preprocess a source file
+src/gmplay_app.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\GMPlay.dir\build.make CMakeFiles/GMPlay.dir/src/gmplay_app.cpp.i
+.PHONY : src/gmplay_app.cpp.i
+
+src/gmplay_app.s: src/gmplay_app.cpp.s
+.PHONY : src/gmplay_app.s
+
+# target to generate assembly for a file
+src/gmplay_app.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\GMPlay.dir\build.make CMakeFiles/GMPlay.dir/src/gmplay_app.cpp.s
+.PHONY : src/gmplay_app.cpp.s
+
 src/main.obj: src/main.cpp.obj
 .PHONY : src/main.obj
 
@@ -158,6 +195,7 @@ thirdparty/glad/src/glad.obj: thirdparty/glad/src/glad.c.obj
 # target to build an object file
 thirdparty/glad/src/glad.c.obj:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\GMEngine.dir\build.make CMakeFiles/GMEngine.dir/thirdparty/glad/src/glad.c.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\GMPlay.dir\build.make CMakeFiles/GMPlay.dir/thirdparty/glad/src/glad.c.obj
 .PHONY : thirdparty/glad/src/glad.c.obj
 
 thirdparty/glad/src/glad.i: thirdparty/glad/src/glad.c.i
@@ -166,6 +204,7 @@ thirdparty/glad/src/glad.i: thirdparty/glad/src/glad.c.i
 # target to preprocess a source file
 thirdparty/glad/src/glad.c.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\GMEngine.dir\build.make CMakeFiles/GMEngine.dir/thirdparty/glad/src/glad.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\GMPlay.dir\build.make CMakeFiles/GMPlay.dir/thirdparty/glad/src/glad.c.i
 .PHONY : thirdparty/glad/src/glad.c.i
 
 thirdparty/glad/src/glad.s: thirdparty/glad/src/glad.c.s
@@ -174,6 +213,7 @@ thirdparty/glad/src/glad.s: thirdparty/glad/src/glad.c.s
 # target to generate assembly for a file
 thirdparty/glad/src/glad.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\GMEngine.dir\build.make CMakeFiles/GMEngine.dir/thirdparty/glad/src/glad.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\GMPlay.dir\build.make CMakeFiles/GMPlay.dir/thirdparty/glad/src/glad.c.s
 .PHONY : thirdparty/glad/src/glad.c.s
 
 thirdparty/imgui/backends/imgui_impl_glfw.obj: thirdparty/imgui/backends/imgui_impl_glfw.cpp.obj
@@ -182,6 +222,7 @@ thirdparty/imgui/backends/imgui_impl_glfw.obj: thirdparty/imgui/backends/imgui_i
 # target to build an object file
 thirdparty/imgui/backends/imgui_impl_glfw.cpp.obj:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\GMEngine.dir\build.make CMakeFiles/GMEngine.dir/thirdparty/imgui/backends/imgui_impl_glfw.cpp.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\GMPlay.dir\build.make CMakeFiles/GMPlay.dir/thirdparty/imgui/backends/imgui_impl_glfw.cpp.obj
 .PHONY : thirdparty/imgui/backends/imgui_impl_glfw.cpp.obj
 
 thirdparty/imgui/backends/imgui_impl_glfw.i: thirdparty/imgui/backends/imgui_impl_glfw.cpp.i
@@ -190,6 +231,7 @@ thirdparty/imgui/backends/imgui_impl_glfw.i: thirdparty/imgui/backends/imgui_imp
 # target to preprocess a source file
 thirdparty/imgui/backends/imgui_impl_glfw.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\GMEngine.dir\build.make CMakeFiles/GMEngine.dir/thirdparty/imgui/backends/imgui_impl_glfw.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\GMPlay.dir\build.make CMakeFiles/GMPlay.dir/thirdparty/imgui/backends/imgui_impl_glfw.cpp.i
 .PHONY : thirdparty/imgui/backends/imgui_impl_glfw.cpp.i
 
 thirdparty/imgui/backends/imgui_impl_glfw.s: thirdparty/imgui/backends/imgui_impl_glfw.cpp.s
@@ -198,6 +240,7 @@ thirdparty/imgui/backends/imgui_impl_glfw.s: thirdparty/imgui/backends/imgui_imp
 # target to generate assembly for a file
 thirdparty/imgui/backends/imgui_impl_glfw.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\GMEngine.dir\build.make CMakeFiles/GMEngine.dir/thirdparty/imgui/backends/imgui_impl_glfw.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\GMPlay.dir\build.make CMakeFiles/GMPlay.dir/thirdparty/imgui/backends/imgui_impl_glfw.cpp.s
 .PHONY : thirdparty/imgui/backends/imgui_impl_glfw.cpp.s
 
 thirdparty/imgui/backends/imgui_impl_opengl3.obj: thirdparty/imgui/backends/imgui_impl_opengl3.cpp.obj
@@ -206,6 +249,7 @@ thirdparty/imgui/backends/imgui_impl_opengl3.obj: thirdparty/imgui/backends/imgu
 # target to build an object file
 thirdparty/imgui/backends/imgui_impl_opengl3.cpp.obj:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\GMEngine.dir\build.make CMakeFiles/GMEngine.dir/thirdparty/imgui/backends/imgui_impl_opengl3.cpp.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\GMPlay.dir\build.make CMakeFiles/GMPlay.dir/thirdparty/imgui/backends/imgui_impl_opengl3.cpp.obj
 .PHONY : thirdparty/imgui/backends/imgui_impl_opengl3.cpp.obj
 
 thirdparty/imgui/backends/imgui_impl_opengl3.i: thirdparty/imgui/backends/imgui_impl_opengl3.cpp.i
@@ -214,6 +258,7 @@ thirdparty/imgui/backends/imgui_impl_opengl3.i: thirdparty/imgui/backends/imgui_
 # target to preprocess a source file
 thirdparty/imgui/backends/imgui_impl_opengl3.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\GMEngine.dir\build.make CMakeFiles/GMEngine.dir/thirdparty/imgui/backends/imgui_impl_opengl3.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\GMPlay.dir\build.make CMakeFiles/GMPlay.dir/thirdparty/imgui/backends/imgui_impl_opengl3.cpp.i
 .PHONY : thirdparty/imgui/backends/imgui_impl_opengl3.cpp.i
 
 thirdparty/imgui/backends/imgui_impl_opengl3.s: thirdparty/imgui/backends/imgui_impl_opengl3.cpp.s
@@ -222,6 +267,7 @@ thirdparty/imgui/backends/imgui_impl_opengl3.s: thirdparty/imgui/backends/imgui_
 # target to generate assembly for a file
 thirdparty/imgui/backends/imgui_impl_opengl3.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\GMEngine.dir\build.make CMakeFiles/GMEngine.dir/thirdparty/imgui/backends/imgui_impl_opengl3.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\GMPlay.dir\build.make CMakeFiles/GMPlay.dir/thirdparty/imgui/backends/imgui_impl_opengl3.cpp.s
 .PHONY : thirdparty/imgui/backends/imgui_impl_opengl3.cpp.s
 
 thirdparty/imgui/imgui.obj: thirdparty/imgui/imgui.cpp.obj
@@ -230,6 +276,7 @@ thirdparty/imgui/imgui.obj: thirdparty/imgui/imgui.cpp.obj
 # target to build an object file
 thirdparty/imgui/imgui.cpp.obj:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\GMEngine.dir\build.make CMakeFiles/GMEngine.dir/thirdparty/imgui/imgui.cpp.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\GMPlay.dir\build.make CMakeFiles/GMPlay.dir/thirdparty/imgui/imgui.cpp.obj
 .PHONY : thirdparty/imgui/imgui.cpp.obj
 
 thirdparty/imgui/imgui.i: thirdparty/imgui/imgui.cpp.i
@@ -238,6 +285,7 @@ thirdparty/imgui/imgui.i: thirdparty/imgui/imgui.cpp.i
 # target to preprocess a source file
 thirdparty/imgui/imgui.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\GMEngine.dir\build.make CMakeFiles/GMEngine.dir/thirdparty/imgui/imgui.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\GMPlay.dir\build.make CMakeFiles/GMPlay.dir/thirdparty/imgui/imgui.cpp.i
 .PHONY : thirdparty/imgui/imgui.cpp.i
 
 thirdparty/imgui/imgui.s: thirdparty/imgui/imgui.cpp.s
@@ -246,6 +294,7 @@ thirdparty/imgui/imgui.s: thirdparty/imgui/imgui.cpp.s
 # target to generate assembly for a file
 thirdparty/imgui/imgui.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\GMEngine.dir\build.make CMakeFiles/GMEngine.dir/thirdparty/imgui/imgui.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\GMPlay.dir\build.make CMakeFiles/GMPlay.dir/thirdparty/imgui/imgui.cpp.s
 .PHONY : thirdparty/imgui/imgui.cpp.s
 
 thirdparty/imgui/imgui_draw.obj: thirdparty/imgui/imgui_draw.cpp.obj
@@ -254,6 +303,7 @@ thirdparty/imgui/imgui_draw.obj: thirdparty/imgui/imgui_draw.cpp.obj
 # target to build an object file
 thirdparty/imgui/imgui_draw.cpp.obj:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\GMEngine.dir\build.make CMakeFiles/GMEngine.dir/thirdparty/imgui/imgui_draw.cpp.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\GMPlay.dir\build.make CMakeFiles/GMPlay.dir/thirdparty/imgui/imgui_draw.cpp.obj
 .PHONY : thirdparty/imgui/imgui_draw.cpp.obj
 
 thirdparty/imgui/imgui_draw.i: thirdparty/imgui/imgui_draw.cpp.i
@@ -262,6 +312,7 @@ thirdparty/imgui/imgui_draw.i: thirdparty/imgui/imgui_draw.cpp.i
 # target to preprocess a source file
 thirdparty/imgui/imgui_draw.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\GMEngine.dir\build.make CMakeFiles/GMEngine.dir/thirdparty/imgui/imgui_draw.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\GMPlay.dir\build.make CMakeFiles/GMPlay.dir/thirdparty/imgui/imgui_draw.cpp.i
 .PHONY : thirdparty/imgui/imgui_draw.cpp.i
 
 thirdparty/imgui/imgui_draw.s: thirdparty/imgui/imgui_draw.cpp.s
@@ -270,6 +321,7 @@ thirdparty/imgui/imgui_draw.s: thirdparty/imgui/imgui_draw.cpp.s
 # target to generate assembly for a file
 thirdparty/imgui/imgui_draw.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\GMEngine.dir\build.make CMakeFiles/GMEngine.dir/thirdparty/imgui/imgui_draw.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\GMPlay.dir\build.make CMakeFiles/GMPlay.dir/thirdparty/imgui/imgui_draw.cpp.s
 .PHONY : thirdparty/imgui/imgui_draw.cpp.s
 
 thirdparty/imgui/imgui_tables.obj: thirdparty/imgui/imgui_tables.cpp.obj
@@ -278,6 +330,7 @@ thirdparty/imgui/imgui_tables.obj: thirdparty/imgui/imgui_tables.cpp.obj
 # target to build an object file
 thirdparty/imgui/imgui_tables.cpp.obj:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\GMEngine.dir\build.make CMakeFiles/GMEngine.dir/thirdparty/imgui/imgui_tables.cpp.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\GMPlay.dir\build.make CMakeFiles/GMPlay.dir/thirdparty/imgui/imgui_tables.cpp.obj
 .PHONY : thirdparty/imgui/imgui_tables.cpp.obj
 
 thirdparty/imgui/imgui_tables.i: thirdparty/imgui/imgui_tables.cpp.i
@@ -286,6 +339,7 @@ thirdparty/imgui/imgui_tables.i: thirdparty/imgui/imgui_tables.cpp.i
 # target to preprocess a source file
 thirdparty/imgui/imgui_tables.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\GMEngine.dir\build.make CMakeFiles/GMEngine.dir/thirdparty/imgui/imgui_tables.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\GMPlay.dir\build.make CMakeFiles/GMPlay.dir/thirdparty/imgui/imgui_tables.cpp.i
 .PHONY : thirdparty/imgui/imgui_tables.cpp.i
 
 thirdparty/imgui/imgui_tables.s: thirdparty/imgui/imgui_tables.cpp.s
@@ -294,6 +348,7 @@ thirdparty/imgui/imgui_tables.s: thirdparty/imgui/imgui_tables.cpp.s
 # target to generate assembly for a file
 thirdparty/imgui/imgui_tables.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\GMEngine.dir\build.make CMakeFiles/GMEngine.dir/thirdparty/imgui/imgui_tables.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\GMPlay.dir\build.make CMakeFiles/GMPlay.dir/thirdparty/imgui/imgui_tables.cpp.s
 .PHONY : thirdparty/imgui/imgui_tables.cpp.s
 
 thirdparty/imgui/imgui_widgets.obj: thirdparty/imgui/imgui_widgets.cpp.obj
@@ -302,6 +357,7 @@ thirdparty/imgui/imgui_widgets.obj: thirdparty/imgui/imgui_widgets.cpp.obj
 # target to build an object file
 thirdparty/imgui/imgui_widgets.cpp.obj:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\GMEngine.dir\build.make CMakeFiles/GMEngine.dir/thirdparty/imgui/imgui_widgets.cpp.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\GMPlay.dir\build.make CMakeFiles/GMPlay.dir/thirdparty/imgui/imgui_widgets.cpp.obj
 .PHONY : thirdparty/imgui/imgui_widgets.cpp.obj
 
 thirdparty/imgui/imgui_widgets.i: thirdparty/imgui/imgui_widgets.cpp.i
@@ -310,6 +366,7 @@ thirdparty/imgui/imgui_widgets.i: thirdparty/imgui/imgui_widgets.cpp.i
 # target to preprocess a source file
 thirdparty/imgui/imgui_widgets.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\GMEngine.dir\build.make CMakeFiles/GMEngine.dir/thirdparty/imgui/imgui_widgets.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\GMPlay.dir\build.make CMakeFiles/GMPlay.dir/thirdparty/imgui/imgui_widgets.cpp.i
 .PHONY : thirdparty/imgui/imgui_widgets.cpp.i
 
 thirdparty/imgui/imgui_widgets.s: thirdparty/imgui/imgui_widgets.cpp.s
@@ -318,6 +375,7 @@ thirdparty/imgui/imgui_widgets.s: thirdparty/imgui/imgui_widgets.cpp.s
 # target to generate assembly for a file
 thirdparty/imgui/imgui_widgets.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\GMEngine.dir\build.make CMakeFiles/GMEngine.dir/thirdparty/imgui/imgui_widgets.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\GMPlay.dir\build.make CMakeFiles/GMPlay.dir/thirdparty/imgui/imgui_widgets.cpp.s
 .PHONY : thirdparty/imgui/imgui_widgets.cpp.s
 
 thirdparty/imguizmo/ImGuizmo.obj: thirdparty/imguizmo/ImGuizmo.cpp.obj
@@ -326,6 +384,7 @@ thirdparty/imguizmo/ImGuizmo.obj: thirdparty/imguizmo/ImGuizmo.cpp.obj
 # target to build an object file
 thirdparty/imguizmo/ImGuizmo.cpp.obj:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\GMEngine.dir\build.make CMakeFiles/GMEngine.dir/thirdparty/imguizmo/ImGuizmo.cpp.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\GMPlay.dir\build.make CMakeFiles/GMPlay.dir/thirdparty/imguizmo/ImGuizmo.cpp.obj
 .PHONY : thirdparty/imguizmo/ImGuizmo.cpp.obj
 
 thirdparty/imguizmo/ImGuizmo.i: thirdparty/imguizmo/ImGuizmo.cpp.i
@@ -334,6 +393,7 @@ thirdparty/imguizmo/ImGuizmo.i: thirdparty/imguizmo/ImGuizmo.cpp.i
 # target to preprocess a source file
 thirdparty/imguizmo/ImGuizmo.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\GMEngine.dir\build.make CMakeFiles/GMEngine.dir/thirdparty/imguizmo/ImGuizmo.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\GMPlay.dir\build.make CMakeFiles/GMPlay.dir/thirdparty/imguizmo/ImGuizmo.cpp.i
 .PHONY : thirdparty/imguizmo/ImGuizmo.cpp.i
 
 thirdparty/imguizmo/ImGuizmo.s: thirdparty/imguizmo/ImGuizmo.cpp.s
@@ -342,6 +402,7 @@ thirdparty/imguizmo/ImGuizmo.s: thirdparty/imguizmo/ImGuizmo.cpp.s
 # target to generate assembly for a file
 thirdparty/imguizmo/ImGuizmo.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\GMEngine.dir\build.make CMakeFiles/GMEngine.dir/thirdparty/imguizmo/ImGuizmo.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\GMPlay.dir\build.make CMakeFiles/GMPlay.dir/thirdparty/imguizmo/ImGuizmo.cpp.s
 .PHONY : thirdparty/imguizmo/ImGuizmo.cpp.s
 
 # Help Target
@@ -353,6 +414,10 @@ help:
 	@echo ... edit_cache
 	@echo ... rebuild_cache
 	@echo ... GMEngine
+	@echo ... GMPlay
+	@echo ... src/gmplay_app.obj
+	@echo ... src/gmplay_app.i
+	@echo ... src/gmplay_app.s
 	@echo ... src/main.obj
 	@echo ... src/main.i
 	@echo ... src/main.s

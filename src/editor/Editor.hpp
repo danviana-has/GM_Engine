@@ -9,8 +9,139 @@
 #include "../engine/ModelExporter.hpp"
 #include "../engine/ScriptEngine.hpp"
 #include <imgui.h>
+#ifdef _WIN32
 #include <windows.h>
 #include <commdlg.h>
+#include <winhttp.h>
+#endif
+#include <thread>
+#include <mutex>
+#include <vector>
+
+#ifdef _WIN32
+inline std::string makeHuggingFaceRequest(const std::string& apiToken, const std::string& model, const std::string& jsonPayload, std::string& outError) {
+    std::string responseStr = "";
+    HINTERNET hSession = NULL, hConnect = NULL, hRequest = NULL;
+    
+    // Try with default proxy settings first
+    hSession = WinHttpOpen(L"GMEngineAI/1.0", WINHTTP_ACCESS_TYPE_DEFAULT_PROXY, WINHTTP_NO_PROXY_NAME, WINHTTP_NO_PROXY_BYPASS, 0);
+    if (!hSession) {
+        hSession = WinHttpOpen(L"GMEngineAI/1.0", WINHTTP_ACCESS_TYPE_NO_PROXY, WINHTTP_NO_PROXY_NAME, WINHTTP_NO_PROXY_BYPASS, 0);
+    }
+    if (!hSession) { outError = "WinHttpOpen falhou."; return ""; }
+    
+    // Increase timeouts since LLM scene generation can take upwards of a minute to complete
+    WinHttpSetTimeouts(hSession, 0, 60000, 30000, 180000);
+    
+    std::wstring host = L"router.huggingface.co";
+    std::wstring path = L"/v1/chat/completions";
+    
+    hConnect = WinHttpConnect(hSession, host.c_str(), INTERNET_DEFAULT_HTTPS_PORT, 0);
+    if (!hConnect) {
+        WinHttpCloseHandle(hSession);
+        hSession = WinHttpOpen(L"GMEngineAI/1.0", WINHTTP_ACCESS_TYPE_NO_PROXY, WINHTTP_NO_PROXY_NAME, WINHTTP_NO_PROXY_BYPASS, 0);
+        if (hSession) {
+            WinHttpSetTimeouts(hSession, 0, 60000, 30000, 180000);
+            hConnect = WinHttpConnect(hSession, host.c_str(), INTERNET_DEFAULT_HTTPS_PORT, 0);
+        }
+    }
+    if (!hConnect) { outError = "WinHttpConnect falhou."; if (hSession) WinHttpCloseHandle(hSession); return ""; }
+    
+    hRequest = WinHttpOpenRequest(hConnect, L"POST", path.c_str(), NULL, WINHTTP_NO_REFERER, WINHTTP_DEFAULT_ACCEPT_TYPES, WINHTTP_FLAG_SECURE);
+    if (!hRequest) { outError = "WinHttpOpenRequest falhou."; WinHttpCloseHandle(hConnect); WinHttpCloseHandle(hSession); return ""; }
+    
+    std::wstring headers = L"Authorization: Bearer " + std::wstring(apiToken.begin(), apiToken.end()) + L"\r\nContent-Type: application/json\r\n";
+    
+    BOOL bResults = WinHttpSendRequest(hRequest, headers.c_str(), (DWORD)-1, (LPVOID)jsonPayload.c_str(), (DWORD)jsonPayload.length(), (DWORD)jsonPayload.length(), 0);
+    
+    // Self-healing: if name resolution failed (12007), recreate session and request bypassing proxy
+    if (!bResults && GetLastError() == 12007) {
+        WinHttpCloseHandle(hRequest);
+        WinHttpCloseHandle(hConnect);
+        WinHttpCloseHandle(hSession);
+        hRequest = NULL; hConnect = NULL; hSession = NULL;
+        
+        hSession = WinHttpOpen(L"GMEngineAI/1.0", WINHTTP_ACCESS_TYPE_NO_PROXY, WINHTTP_NO_PROXY_NAME, WINHTTP_NO_PROXY_BYPASS, 0);
+        if (hSession) {
+            WinHttpSetTimeouts(hSession, 0, 60000, 30000, 180000);
+            hConnect = WinHttpConnect(hSession, host.c_str(), INTERNET_DEFAULT_HTTPS_PORT, 0);
+            if (hConnect) {
+                hRequest = WinHttpOpenRequest(hConnect, L"POST", path.c_str(), NULL, WINHTTP_NO_REFERER, WINHTTP_DEFAULT_ACCEPT_TYPES, WINHTTP_FLAG_SECURE);
+                if (hRequest) {
+                    bResults = WinHttpSendRequest(hRequest, headers.c_str(), (DWORD)-1, (LPVOID)jsonPayload.c_str(), (DWORD)jsonPayload.length(), (DWORD)jsonPayload.length(), 0);
+                }
+            }
+        }
+    }
+    
+    if (bResults) {
+        bResults = WinHttpReceiveResponse(hRequest, NULL);
+    }
+    
+    if (bResults) {
+        DWORD dwSize = 0;
+        do {
+            dwSize = 0;
+            if (!WinHttpQueryDataAvailable(hRequest, &dwSize)) break;
+            if (dwSize == 0) break;
+            
+            std::vector<char> tempBuf(dwSize + 1);
+            DWORD dwDownloaded = 0;
+            if (WinHttpReadData(hRequest, &tempBuf[0], dwSize, &dwDownloaded)) {
+                tempBuf[dwDownloaded] = '\0';
+                responseStr += std::string(&tempBuf[0], dwDownloaded);
+            }
+        } while (dwSize > 0);
+    } else {
+        outError = "Requisicao HTTP falhou (Error code: " + std::to_string(GetLastError()) + ")";
+    }
+    
+    if (hRequest) WinHttpCloseHandle(hRequest);
+    if (hConnect) WinHttpCloseHandle(hConnect);
+    if (hSession) WinHttpCloseHandle(hSession);
+    
+    return responseStr;
+}
+
+inline std::string cleanModelJson(const std::string& rawResponse) {
+    std::string clean = rawResponse;
+    
+    try {
+        auto responseJ = nlohmann::json::parse(rawResponse);
+        if (responseJ.contains("choices") && responseJ["choices"].is_array() && !responseJ["choices"].empty()) {
+            auto firstChoice = responseJ["choices"][0];
+            if (firstChoice.contains("message") && firstChoice["message"].contains("content")) {
+                clean = firstChoice["message"]["content"].get<std::string>();
+            }
+        } else if (responseJ.is_array() && !responseJ.empty()) {
+            clean = responseJ[0].value("generated_text", "");
+        }
+    } catch (...) {}
+    
+    size_t codeStart = clean.find("```json");
+    if (codeStart != std::string::npos) {
+        clean = clean.substr(codeStart + 7);
+        size_t codeEnd = clean.find("```");
+        if (codeEnd != std::string::npos) {
+            clean = clean.substr(0, codeEnd);
+        }
+    } else {
+        codeStart = clean.find("```");
+        if (codeStart != std::string::npos) {
+            clean = clean.substr(codeStart + 3);
+            size_t codeEnd = clean.find("```");
+            if (codeEnd != std::string::npos) {
+                clean = clean.substr(0, codeEnd);
+            }
+        }
+    }
+    
+    clean.erase(0, clean.find_first_not_of(" \t\r\n"));
+    clean.erase(clean.find_last_not_of(" \t\r\n") + 1);
+    
+    return clean;
+}
+#endif
 
 class Editor {
 public:
@@ -26,6 +157,16 @@ public:
     bool openExportGLTFPopup = false;
     bool openImportPopup = false;
     bool openPublishPopup = false;
+    
+    bool showAiCreatorDialog = false;
+    char aiPrompt[512] = "Um parkour facil com 5 plataformas azuis e um cubo neon de vitoria";
+    char aiModel[128] = "Qwen/Qwen2.5-72B-Instruct";
+    char aiToken[128] = "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";
+    std::string aiStatus = "";
+    bool aiGenerating = false;
+    std::string aiResultJson = "";
+    std::string aiErrorMsg = "";
+    bool aiResultReady = false;
 
     Editor() {
         // Add a default starting log
@@ -231,6 +372,49 @@ public:
                     viewport.selectedPartId = vic->id;
                     logMessage("Inserted Victory Point Template.");
                 }
+                if (ImGui::MenuItem("Arma (Template)")) {
+                    auto gun = scene.addPart(PartShape::Block);
+                    gun->name = "Gun";
+                    gun->color = glm::vec4(0.4f, 0.4f, 0.4f, 1.0f);
+                    gun->anchored = true;
+                    gun->canCollide = false;
+                    gun->position = glm::vec3(0.0f, 5.0f, -5.0f);
+                    gun->size = glm::vec3(0.5f, 0.5f, 2.0f);
+                    
+                    auto bullet = scene.addPart(PartShape::Sphere);
+                    bullet->name = "Bullet";
+                    bullet->color = glm::vec4(1.0f, 1.0f, 0.0f, 1.0f);
+                    bullet->anchored = false;
+                    bullet->canCollide = true;
+                    bullet->position = glm::vec3(0.0f, 5.0f, -5.0f);
+                    bullet->size = glm::vec3(0.6f, 0.6f, 0.6f);
+                    bullet->scriptLanguage = 1;
+                    bullet->script = 
+                        "// C++ Bullet Script\n"
+                        "extern \"C\" __declspec(dllexport) void updatePart(PartState* state) {\n"
+                        "    // Fly forward along the Z axis\n"
+                        "    state->position[2] += 30.0f * state->dt;\n"
+                        "    \n"
+                        "    // Reset position if it collides or goes too far\n"
+                        "    if (state->isColliding || state->position[2] > 60.0f) {\n"
+                        "        state->position[0] = 0.0f;\n"
+                        "        state->position[1] = 5.0f;\n"
+                        "        state->position[2] = -5.0f;\n"
+                        "        state->velocity[0] = 0.0f;\n"
+                        "        state->velocity[1] = 0.0f;\n"
+                        "        state->velocity[2] = 0.0f;\n"
+                        "    }\n"
+                        "}\n";
+                        
+                    viewport.selectedPartId = gun->id;
+                    logMessage("Inserted Arma (Weapon & Bullet) Template.");
+                }
+                ImGui::EndMenu();
+            }
+            if (ImGui::BeginMenu("IA Criadora")) {
+                if (ImGui::MenuItem("Gerar Jogo com IA...")) {
+                    showAiCreatorDialog = true;
+                }
                 ImGui::EndMenu();
             }
             ImGui::EndMenuBar();
@@ -311,6 +495,44 @@ public:
                 vic->script = "victory\n";
                 viewport.selectedPartId = vic->id;
                 logMessage("Inserted Victory Point Template.");
+            }
+            ImGui::SameLine();
+            if (ImGui::Button("Arma")) {
+                auto gun = scene.addPart(PartShape::Block);
+                gun->name = "Gun";
+                gun->color = glm::vec4(0.4f, 0.4f, 0.4f, 1.0f);
+                gun->anchored = true;
+                gun->canCollide = false;
+                gun->position = glm::vec3(0.0f, 5.0f, -5.0f);
+                gun->size = glm::vec3(0.5f, 0.5f, 2.0f);
+                
+                auto bullet = scene.addPart(PartShape::Sphere);
+                bullet->name = "Bullet";
+                bullet->color = glm::vec4(1.0f, 1.0f, 0.0f, 1.0f);
+                bullet->anchored = false;
+                bullet->canCollide = true;
+                bullet->position = glm::vec3(0.0f, 5.0f, -5.0f);
+                bullet->size = glm::vec3(0.6f, 0.6f, 0.6f);
+                bullet->scriptLanguage = 1;
+                bullet->script = 
+                    "// C++ Bullet Script\n"
+                    "extern \"C\" __declspec(dllexport) void updatePart(PartState* state) {\n"
+                    "    // Fly forward along the Z axis\n"
+                    "    state->position[2] += 30.0f * state->dt;\n"
+                    "    \n"
+                    "    // Reset position if it collides or goes too far\n"
+                    "    if (state->isColliding || state->position[2] > 60.0f) {\n"
+                    "        state->position[0] = 0.0f;\n"
+                    "        state->position[1] = 5.0f;\n"
+                    "        state->position[2] = -5.0f;\n"
+                    "        state->velocity[0] = 0.0f;\n"
+                    "        state->velocity[1] = 0.0f;\n"
+                    "        state->velocity[2] = 0.0f;\n"
+                    "    }\n"
+                    "}\n";
+                    
+                viewport.selectedPartId = gun->id;
+                logMessage("Inserted Arma (Weapon & Bullet) Template.");
             }
 
             ImGui::SameLine();
@@ -520,6 +742,7 @@ public:
             ImGui::InputText("File Path", pathBuf, sizeof(pathBuf));
             ImGui::SameLine();
             if (ImGui::Button("Browse...")) {
+#ifdef _WIN32
                 OPENFILENAMEA ofn;
                 char szFile[260] = { 0 };
                 ZeroMemory(&ofn, sizeof(ofn));
@@ -537,6 +760,10 @@ public:
                 if (GetOpenFileNameA(&ofn) == TRUE) {
                     strcpy(pathBuf, ofn.lpstrFile);
                 }
+#else
+                // Web/Android: user types the path manually
+                ImGui::OpenPopup("##web_path_hint");
+#endif
             }
             ImGui::Separator();
             if (ImGui::Button("Import", ImVec2(120, 0))) {
@@ -585,6 +812,94 @@ public:
                 ImGui::CloseCurrentPopup();
             }
             ImGui::EndPopup();
+        }
+
+        if (showAiCreatorDialog) {
+            ImGui::OpenPopup("IA Criadora - Gerar Cenario");
+            showAiCreatorDialog = false;
+        }
+        if (ImGui::BeginPopupModal("IA Criadora - Gerar Cenario", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
+            ImGui::TextColored(ImVec4(0.1f, 0.6f, 0.9f, 1.0f), "Gerar Jogo com Inteligência Artificial");
+            ImGui::Separator();
+            ImGui::Spacing();
+            
+            ImGui::InputText("Prompt do Cenário", aiPrompt, sizeof(aiPrompt));
+            ImGui::InputText("Token do Hugging Face", aiToken, sizeof(aiToken));
+            ImGui::InputText("Modelo do HF", aiModel, sizeof(aiModel));
+            
+            ImGui::Spacing();
+            ImGui::Separator();
+            ImGui::Spacing();
+            
+            if (aiGenerating) {
+                ImGui::TextColored(ImVec4(0.9f, 0.8f, 0.1f, 1.0f), "Gerando cenário, aguarde por favor...");
+            } else {
+                if (ImGui::Button("Gerar Cenario", ImVec2(150, 35))) {
+                    aiGenerating = true;
+                    aiResultReady = false;
+                    aiErrorMsg = "";
+                    aiResultJson = "";
+                    
+                    std::string promptStr(aiPrompt);
+                    std::string modelStr(aiModel);
+                    std::string tokenStr(aiToken);
+                    
+                    std::thread([this, promptStr, modelStr, tokenStr]() {
+                        nlohmann::json payload;
+                        payload["model"] = modelStr;
+                        payload["messages"] = nlohmann::json::array({
+                            {
+                                {"role", "user"},
+                                {"content", "[System: You are an expert level designer for GM Engine. You only output a single raw JSON scene format. Do NOT include markdown code blocks, backticks, or any other explanations. Output ONLY valid JSON containing the 'ambientColor', 'sunDirection', 'skyColor', and 'workspace' array of parts. Example: {\"ambientColor\": [0.4, 0.4, 0.4], \"sunDirection\": [0.5, -1.0, 0.3], \"skyColor\": [0.5, 0.8, 1.0], \"workspace\": [{\"id\": 1, \"name\": \"Baseplate\", \"shape\": \"Block\", \"material\": \"Plastic\", \"position\": [0, -1, 0], \"size\": [100, 2, 100], \"rotation\": [0, 0, 0], \"color\": [0.35, 0.6, 0.3, 1], \"transparency\": 0, \"reflectance\": 0, \"anchored\": true, \"canCollide\": true}]} ]\n\nGenerate a game scene in GM Engine JSON format based on: " + promptStr}
+                            }
+                        });
+                        payload["max_tokens"] = 1500;
+                        
+                        std::string err = "";
+                        std::string rawResponse = makeHuggingFaceRequest(tokenStr, modelStr, payload.dump(), err);
+                        
+                        if (!err.empty()) {
+                            aiErrorMsg = err;
+                        } else {
+                            std::string cleaned = cleanModelJson(rawResponse);
+                            try {
+                                auto verifyJ = nlohmann::json::parse(cleaned);
+                                if (verifyJ.contains("workspace")) {
+                                    aiResultJson = cleaned;
+                                } else {
+                                    aiErrorMsg = "Modelo nao retornou um workspace valido de GM Engine.\nResposta:\n" + cleaned.substr(0, 300);
+                                }
+                            } catch (const std::exception& e) {
+                                aiErrorMsg = "Erro ao parsear JSON. Modelo retornou:\n" + cleaned.substr(0, 300);
+                            }
+                        }
+                        aiResultReady = true;
+                    }).detach();
+                }
+                ImGui::SameLine();
+                if (ImGui::Button("Cancelar", ImVec2(100, 35))) {
+                    ImGui::CloseCurrentPopup();
+                }
+            }
+            
+            if (!aiErrorMsg.empty()) {
+                ImGui::Spacing();
+                ImGui::TextColored(ImVec4(1, 0.1f, 0.1f, 1), "Erro: %s", aiErrorMsg.c_str());
+            }
+            
+            ImGui::EndPopup();
+        }
+
+        // Handle async result loading safely on main thread
+        if (aiResultReady) {
+            aiGenerating = false;
+            aiResultReady = false;
+            if (aiErrorMsg.empty() && !aiResultJson.empty()) {
+                scene.deserializeFromString(aiResultJson);
+                logMessage("IA: Cenario gerado e carregado com sucesso!", glm::vec4(0.0f, 1.0f, 0.5f, 1.0f));
+            } else {
+                logMessage("IA Erro: " + aiErrorMsg, glm::vec4(1.0f, 0.1f, 0.1f, 1.0f));
+            }
         }
 
         // 6. Viewport Panel

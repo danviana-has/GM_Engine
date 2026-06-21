@@ -87,6 +87,8 @@ CMakeFiles/GMEngine.dir/src/main.cpp.obj: C:/Users/dvian/Downloads/GM\ Engine/sr
   C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/bits/sstream.tcc \
   C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/bits/std_abs.h \
   C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/bits/std_function.h \
+  C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/bits/std_mutex.h \
+  C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/bits/std_thread.h \
   C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/bits/stdexcept_except.h \
   C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/bits/stdexcept_throw.h \
   C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/bits/stdexcept_throwfwd.h \
@@ -114,7 +116,9 @@ CMakeFiles/GMEngine.dir/src/main.cpp.obj: C:/Users/dvian/Downloads/GM\ Engine/sr
   C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/bits/streambuf_iterator.h \
   C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/bits/string_view.tcc \
   C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/bits/stringfwd.h \
+  C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/bits/this_thread_sleep.h \
   C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/bits/uniform_int_dist.h \
+  C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/bits/unique_lock.h \
   C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/bits/unique_ptr.h \
   C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/bits/unordered_map.h \
   C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/bits/uses_allocator.h \
@@ -169,6 +173,7 @@ CMakeFiles/GMEngine.dir/src/main.cpp.obj: C:/Users/dvian/Downloads/GM\ Engine/sr
   C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/locale \
   C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/map \
   C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/memory \
+  C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/mutex \
   C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/new \
   C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/numeric \
   C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/ostream \
@@ -185,6 +190,7 @@ CMakeFiles/GMEngine.dir/src/main.cpp.obj: C:/Users/dvian/Downloads/GM\ Engine/sr
   C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/string \
   C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/string_view \
   C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/system_error \
+  C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/thread \
   C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/tr1/bessel_function.tcc \
   C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/tr1/beta_function.tcc \
   C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/tr1/ell_integral.tcc \
@@ -358,6 +364,8 @@ CMakeFiles/GMEngine.dir/src/main.cpp.obj: C:/Users/dvian/Downloads/GM\ Engine/sr
   C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/cderr.h \
   C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/cguid.h \
   C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/combaseapi.h \
+  C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/comcat.h \
+  C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/commctrl.h \
   C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/commdlg.h \
   C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/concurrencysal.h \
   C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/consoleapi.h \
@@ -376,11 +384,13 @@ CMakeFiles/GMEngine.dir/src/main.cpp.obj: C:/Users/dvian/Downloads/GM\ Engine/sr
   C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/ddeml.h \
   C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/debugapi.h \
   C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/dlgs.h \
+  C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/docobj.h \
   C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/dpapi.h \
   C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/driverspecs.h \
   C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/errhandlingapi.h \
   C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/errno.h \
   C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/excpt.h \
+  C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/exdisp.h \
   C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/fibersapi.h \
   C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/fileapi.h \
   C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/float.h \
@@ -392,8 +402,10 @@ CMakeFiles/GMEngine.dir/src/main.cpp.obj: C:/Users/dvian/Downloads/GM\ Engine/sr
   C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/inaddr.h \
   C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/interlockedapi.h \
   C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/ioapiset.h \
+  C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/isguids.h \
   C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/jobapi.h \
   C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/joystickapi.h \
+  C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/knownfolders.h \
   C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/ktmtypes.h \
   C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/libloaderapi.h \
   C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/limits.h \
@@ -418,8 +430,10 @@ CMakeFiles/GMEngine.dir/src/main.cpp.obj: C:/Users/dvian/Downloads/GM\ Engine/sr
   C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/ncrypt.h \
   C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/oaidl.h \
   C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/objbase.h \
+  C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/objectarray.h \
   C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/objidl.h \
   C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/objidlbase.h \
+  C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/ocidl.h \
   C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/ole2.h \
   C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/oleauto.h \
   C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/oleidl.h \
@@ -431,6 +445,8 @@ CMakeFiles/GMEngine.dir/src/main.cpp.obj: C:/Users/dvian/Downloads/GM\ Engine/sr
   C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/processtopologyapi.h \
   C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/profileapi.h \
   C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/propidl.h \
+  C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/propkeydef.h \
+  C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/propsys.h \
   C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/prsht.h \
   C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/psdk_inc/_fd_types.h \
   C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/psdk_inc/_ip_mreq1.h \
@@ -474,6 +490,12 @@ CMakeFiles/GMEngine.dir/src/main.cpp.obj: C:/Users/dvian/Downloads/GM\ Engine/sr
   C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/securitybaseapi.h \
   C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/servprov.h \
   C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/shellapi.h \
+  C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/sherrors.h \
+  C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/shldisp.h \
+  C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/shlguid.h \
+  C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/shlobj.h \
+  C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/shobjidl.h \
+  C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/shtypes.h \
   C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/signal.h \
   C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/specstrings.h \
   C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/stdarg.h \
@@ -484,6 +506,7 @@ CMakeFiles/GMEngine.dir/src/main.cpp.obj: C:/Users/dvian/Downloads/GM\ Engine/sr
   C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/stralign.h \
   C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/string.h \
   C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/stringapiset.h \
+  C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/structuredquerycondition.h \
   C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/swprintf.inl \
   C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/synchapi.h \
   C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/sys/timeb.h \
@@ -514,6 +537,7 @@ CMakeFiles/GMEngine.dir/src/main.cpp.obj: C:/Users/dvian/Downloads/GM\ Engine/sr
   C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/winefs.h \
   C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/winerror.h \
   C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/wingdi.h \
+  C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/winhttp.h \
   C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/winioctl.h \
   C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/winnetwk.h \
   C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/winnls.h \
@@ -742,6 +766,7 @@ CMakeFiles/GMEngine.dir/src/main.cpp.obj: C:/Users/dvian/Downloads/GM\ Engine/sr
   C:/Users/dvian/Downloads/GM\ Engine/src/engine/MeshImporter.hpp \
   C:/Users/dvian/Downloads/GM\ Engine/src/engine/Part.hpp \
   C:/Users/dvian/Downloads/GM\ Engine/src/engine/Physics.hpp \
+  C:/Users/dvian/Downloads/GM\ Engine/src/engine/Platform.hpp \
   C:/Users/dvian/Downloads/GM\ Engine/src/engine/Renderer.hpp \
   C:/Users/dvian/Downloads/GM\ Engine/src/engine/Scene.hpp \
   C:/Users/dvian/Downloads/GM\ Engine/src/engine/ScriptEngine.hpp \
@@ -2601,19 +2626,19 @@ C:/Users/dvian/Downloads/GM\ Engine/thirdparty/glm/glm/gtc/quaternion.inl:
 
 C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/algorithm:
 
-C:/Users/dvian/Downloads/GM\ Engine/thirdparty/glm/glm/detail/func_integer.inl:
-
-C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/corecrt_startup.h:
-
-C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/rpcnterr.h:
-
-C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/winerror.h:
-
 C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/bits/forward_list.h:
 
 C:/Users/Public/GMEngineTools/mingw64/lib/gcc/x86_64-w64-mingw32/16.1.0/include/vaesintrin.h:
 
 C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/stdlib.h:
+
+C:/Users/dvian/Downloads/GM\ Engine/thirdparty/glm/glm/detail/func_integer.inl:
+
+C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/winerror.h:
+
+C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/corecrt_startup.h:
+
+C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/rpcnterr.h:
 
 C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/bits/algorithmfwd.h:
 
@@ -2689,9 +2714,11 @@ C:/Users/dvian/Downloads/GM\ Engine/thirdparty/glm/glm/ext/vector_int2_sized.hpp
 
 C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/bits/alloc_traits.h:
 
-C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/bits/allocated_ptr.h:
+C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/isguids.h:
 
 C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/wincon.h:
+
+C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/bits/allocated_ptr.h:
 
 C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/bits/locale_facets_nonio.tcc:
 
@@ -2895,9 +2922,11 @@ C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/bits/node_handle.h:
 
 C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/bits/ostream.h:
 
-C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/bits/ostream.tcc:
+C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/bits/std_mutex.h:
 
 C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/threadpoollegacyapiset.h:
+
+C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/bits/ostream.tcc:
 
 C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/ctime:
 
@@ -2935,9 +2964,9 @@ C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/bits/quoted_string.h:
 
 C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/x86_64-w64-mingw32/bits/c++allocator.h:
 
-C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/cderr.h:
-
 C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/winefs.h:
+
+C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/cderr.h:
 
 C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/bits/range_access.h:
 
@@ -2957,13 +2986,11 @@ C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/bits/shared_ptr_atomic.
 
 C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/sdkddkver.h:
 
+C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/propsys.h:
+
 C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/bits/shared_ptr_base.h:
 
 C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/bits/stl_algobase.h:
-
-C:/Users/dvian/Downloads/GM\ Engine/thirdparty/glm/glm/mat2x2.hpp:
-
-C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/virtdisk.h:
 
 C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/bits/slice_array.h:
 
@@ -2971,11 +2998,11 @@ C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/psdk_inc/_wsada
 
 C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/bits/specfun.h:
 
-C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/time.h:
-
 C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/bits/sstream.tcc:
 
 C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/bits/std_abs.h:
+
+C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/bits/std_thread.h:
 
 C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/bits/stdexcept_except.h:
 
@@ -3051,6 +3078,8 @@ C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/bits/stl_vector.h:
 
 C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/iosfwd:
 
+C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/shldisp.h:
+
 C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/bits/stream_iterator.h:
 
 C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/iterator:
@@ -3069,9 +3098,15 @@ C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/dpapi.h:
 
 C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/bits/stringfwd.h:
 
+C:/Users/Public/GMEngineTools/mingw64/lib/gcc/x86_64-w64-mingw32/16.1.0/include/avxvnniintrin.h:
+
+C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/bits/this_thread_sleep.h:
+
 C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/_mingw_secapi.h:
 
 C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/bits/uniform_int_dist.h:
+
+C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/bits/unique_lock.h:
 
 C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/bits/unique_ptr.h:
 
@@ -3127,6 +3162,8 @@ C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/cctype:
 
 C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/cerrno:
 
+C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/winhttp.h:
+
 C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/cmath:
 
 C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/codecvt:
@@ -3141,9 +3178,9 @@ C:/Users/dvian/Downloads/GM\ Engine/src/editor/Editor.hpp:
 
 C:/Users/dvian/Downloads/GM\ Engine/thirdparty/glm/glm/ext/matrix_double3x3_precision.hpp:
 
-C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/concepts:
-
 C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/unknwnbase.h:
+
+C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/concepts:
 
 C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/cstddef:
 
@@ -3155,13 +3192,13 @@ C:/Users/Public/GMEngineTools/mingw64/lib/gcc/x86_64-w64-mingw32/16.1.0/include/
 
 C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/cstdio:
 
+C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/windef.h:
+
 C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/cstring:
 
 C:/Users/Public/GMEngineTools/mingw64/lib/gcc/x86_64-w64-mingw32/16.1.0/include/avx512vpopcntdqintrin.h:
 
 C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/mciapi.h:
-
-C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/windef.h:
 
 C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/cwchar:
 
@@ -3215,6 +3252,8 @@ C:/Users/Public/GMEngineTools/mingw64/lib/gcc/x86_64-w64-mingw32/16.1.0/include/
 
 C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/functional:
 
+C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/mutex:
+
 C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/float.h:
 
 C:/Users/dvian/Downloads/GM\ Engine/thirdparty/glm/glm/ext/vector_int3.hpp:
@@ -3251,6 +3290,8 @@ C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/systemtopologya
 
 C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/memory:
 
+C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/shtypes.h:
+
 C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/new:
 
 C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/numeric:
@@ -3269,11 +3310,11 @@ C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/sstream:
 
 C:/Users/dvian/Downloads/GM\ Engine/src/editor/Viewport.hpp:
 
+C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/vadefs.h:
+
 C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/stdexcept:
 
 C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/memoryapi.h:
-
-C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/vadefs.h:
 
 C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/tr1/poly_laguerre.tcc:
 
@@ -3290,6 +3331,10 @@ C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/string:
 C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/system_error:
 
 C:/Users/Public/GMEngineTools/mingw64/lib/gcc/x86_64-w64-mingw32/16.1.0/include/mwaitxintrin.h:
+
+C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/thread:
+
+C:/Users/Public/GMEngineTools/mingw64/lib/gcc/x86_64-w64-mingw32/16.1.0/include/avx512fp16intrin.h:
 
 C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/stralign.h:
 
@@ -3321,11 +3366,11 @@ C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/tr1/legendre_function.t
 
 C:/Users/Public/GMEngineTools/mingw64/lib/gcc/x86_64-w64-mingw32/16.1.0/include/immintrin.h:
 
+C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/threadpoolapiset.h:
+
 C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/tr1/poly_hermite.tcc:
 
 C:/Users/Public/GMEngineTools/mingw64/lib/gcc/x86_64-w64-mingw32/16.1.0/include/ia32intrin.h:
-
-C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/threadpoolapiset.h:
 
 C:/Users/Public/GMEngineTools/mingw64/include/c++/16.1.0/tr1/special_function_util.h:
 
@@ -3407,6 +3452,8 @@ C:/Users/Public/GMEngineTools/mingw64/lib/gcc/x86_64-w64-mingw32/16.1.0/include/
 
 C:/Users/Public/GMEngineTools/mingw64/lib/gcc/x86_64-w64-mingw32/16.1.0/include/cldemoteintrin.h:
 
+C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/structuredquerycondition.h:
+
 C:/Users/Public/GMEngineTools/mingw64/lib/gcc/x86_64-w64-mingw32/16.1.0/include/amxmovrsintrin.h:
 
 C:/Users/Public/GMEngineTools/mingw64/lib/gcc/x86_64-w64-mingw32/16.1.0/include/amxtf32intrin.h:
@@ -3447,8 +3494,6 @@ C:/Users/Public/GMEngineTools/mingw64/lib/gcc/x86_64-w64-mingw32/16.1.0/include/
 
 C:/Users/Public/GMEngineTools/mingw64/lib/gcc/x86_64-w64-mingw32/16.1.0/include/avx512fintrin.h:
 
-C:/Users/Public/GMEngineTools/mingw64/lib/gcc/x86_64-w64-mingw32/16.1.0/include/avx512fp16intrin.h:
-
 C:/Users/Public/GMEngineTools/mingw64/lib/gcc/x86_64-w64-mingw32/16.1.0/include/avx512fp16vlintrin.h:
 
 C:/Users/Public/GMEngineTools/mingw64/lib/gcc/x86_64-w64-mingw32/16.1.0/include/avx512ifmaintrin.h:
@@ -3467,9 +3512,9 @@ C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/locale.h:
 
 C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/sec_api/wconio_s.h:
 
-C:/Users/Public/GMEngineTools/mingw64/lib/gcc/x86_64-w64-mingw32/16.1.0/include/avx512vlbwintrin.h:
-
 C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/winbase.h:
+
+C:/Users/Public/GMEngineTools/mingw64/lib/gcc/x86_64-w64-mingw32/16.1.0/include/avx512vlbwintrin.h:
 
 C:/Users/dvian/Downloads/GM\ Engine/thirdparty/glm/glm/detail/func_vector_relational.inl:
 
@@ -3491,8 +3536,6 @@ C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/pthread.h:
 
 C:/Users/Public/GMEngineTools/mingw64/lib/gcc/x86_64-w64-mingw32/16.1.0/include/avxvnniint8intrin.h:
 
-C:/Users/Public/GMEngineTools/mingw64/lib/gcc/x86_64-w64-mingw32/16.1.0/include/avxvnniintrin.h:
-
 C:/Users/Public/GMEngineTools/mingw64/lib/gcc/x86_64-w64-mingw32/16.1.0/include/cetintrin.h:
 
 C:/Users/dvian/Downloads/GM\ Engine/thirdparty/glm/glm/ext/matrix_double2x3_precision.hpp:
@@ -3505,9 +3548,9 @@ C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/corecrt_stdio_c
 
 C:/Users/Public/GMEngineTools/mingw64/lib/gcc/x86_64-w64-mingw32/16.1.0/include/clzerointrin.h:
 
-C:/Users/Public/GMEngineTools/mingw64/lib/gcc/x86_64-w64-mingw32/16.1.0/include/emmintrin.h:
-
 C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/tvout.h:
+
+C:/Users/Public/GMEngineTools/mingw64/lib/gcc/x86_64-w64-mingw32/16.1.0/include/emmintrin.h:
 
 C:/Users/Public/GMEngineTools/mingw64/lib/gcc/x86_64-w64-mingw32/16.1.0/include/fma4intrin.h:
 
@@ -3552,8 +3595,6 @@ C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/synchapi.h:
 C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/sched.h:
 
 C:/Users/Public/GMEngineTools/mingw64/lib/gcc/x86_64-w64-mingw32/16.1.0/include/prfchiintrin.h:
-
-C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/winapifamily.h:
 
 C:/Users/Public/GMEngineTools/mingw64/lib/gcc/x86_64-w64-mingw32/16.1.0/include/raointintrin.h:
 
@@ -3611,9 +3652,11 @@ C:/Users/Public/GMEngineTools/mingw64/lib/gcc/x86_64-w64-mingw32/16.1.0/include/
 
 C:/Users/Public/GMEngineTools/mingw64/lib/gcc/x86_64-w64-mingw32/16.1.0/include/xsaveoptintrin.h:
 
+C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/utilapiset.h:
+
 C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/_bsd_types.h:
 
-C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/utilapiset.h:
+C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/objectarray.h:
 
 C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/_mingw.h:
 
@@ -3625,13 +3668,23 @@ C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/_mingw_stat64.h
 
 C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/apiset.h:
 
+C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/shlguid.h:
+
 C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/basetsd.h:
 
 C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/bemapiset.h:
 
 C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/corecrt_wconio.h:
 
+C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/sherrors.h:
+
 C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/cguid.h:
+
+C:/Users/dvian/Downloads/GM\ Engine/thirdparty/json/nlohmann/json.hpp:
+
+C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/comcat.h:
+
+C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/commctrl.h:
 
 C:/Users/dvian/Downloads/GM\ Engine/thirdparty/imgui/imgui_draw.cpp:
 
@@ -3653,11 +3706,19 @@ C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/debugapi.h:
 
 C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/dlgs.h:
 
+C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/docobj.h:
+
 C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/errno.h:
 
 C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/processenv.h:
 
 C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/excpt.h:
+
+C:/Users/dvian/Downloads/GM\ Engine/thirdparty/glm/glm/detail/type_quat.inl:
+
+C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/urlmon.h:
+
+C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/exdisp.h:
 
 C:/Users/dvian/Downloads/GM\ Engine/thirdparty/glm/glm/detail/func_packing.inl:
 
@@ -3672,6 +3733,10 @@ C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/inaddr.h:
 C:/Users/dvian/Downloads/GM\ Engine/thirdparty/imgui/backends/imgui_impl_glfw.cpp:
 
 C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/ioapiset.h:
+
+C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/ole2.h:
+
+C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/knownfolders.h:
 
 C:/Users/dvian/Downloads/GM\ Engine/thirdparty/glm/glm/ext/quaternion_transform.hpp:
 
@@ -3709,13 +3774,15 @@ C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/mmiscapi2.h:
 
 C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/mmsystem.h:
 
+C:/Users/dvian/Downloads/GM\ Engine/src/engine/Platform.hpp:
+
 C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/msxml.h:
+
+C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/wincontypes.h:
 
 C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/namedpipeapi.h:
 
 C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/playsoundapi.h:
-
-C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/wincontypes.h:
 
 C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/rpcdce.h:
 
@@ -3737,7 +3804,13 @@ C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/objidl.h:
 
 C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/objidlbase.h:
 
-C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/ole2.h:
+C:/Users/dvian/Downloads/GM\ Engine/thirdparty/imgui/imgui_internal.h:
+
+C:/Users/dvian/Downloads/GM\ Engine/thirdparty/glm/glm/detail/type_mat3x4.inl:
+
+C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/wow64apiset.h:
+
+C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/ocidl.h:
 
 C:/Users/dvian/Downloads/GM\ Engine/thirdparty/glm/glm/ext/matrix_float4x2_precision.hpp:
 
@@ -3752,6 +3825,8 @@ C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/poppack.h:
 C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/processtopologyapi.h:
 
 C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/profileapi.h:
+
+C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/propkeydef.h:
 
 C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/psdk_inc/_fd_types.h:
 
@@ -3781,11 +3856,15 @@ C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/sec_api/stralig
 
 C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/shellapi.h:
 
+C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/shlobj.h:
+
+C:/Users/dvian/Downloads/GM\ Engine/thirdparty/glm/glm/ext/vector_int4.hpp:
+
+C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/shobjidl.h:
+
 C:/Users/dvian/Downloads/GM\ Engine/thirdparty/glm/glm/gtx/quaternion.hpp:
 
 C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/stdint.h:
-
-C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/wchar.h:
 
 C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/stdio.h:
 
@@ -3797,6 +3876,8 @@ C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/sys/timeb.h:
 
 C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/sysinfoapi.h:
 
+C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/time.h:
+
 C:/Users/dvian/Downloads/GM\ Engine/thirdparty/glm/glm/ext/matrix_float3x3_precision.hpp:
 
 C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/timeapi.h:
@@ -3807,11 +3888,15 @@ C:/Users/dvian/Downloads/GM\ Engine/thirdparty/glm/glm/gtc/constants.inl:
 
 C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/unknwn.h:
 
-C:/Users/dvian/Downloads/GM\ Engine/thirdparty/glm/glm/detail/type_quat.inl:
+C:/Users/dvian/Downloads/GM\ Engine/thirdparty/glm/glm/mat2x2.hpp:
 
-C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/urlmon.h:
+C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/virtdisk.h:
+
+C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/wchar.h:
 
 C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/wctype.h:
+
+C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/winapifamily.h:
 
 C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/wincrypt.h:
 
@@ -3840,12 +3925,6 @@ C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/winuser.h:
 C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/winver.h:
 
 C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/wnnc.h:
-
-C:/Users/dvian/Downloads/GM\ Engine/thirdparty/imgui/imgui_internal.h:
-
-C:/Users/dvian/Downloads/GM\ Engine/thirdparty/glm/glm/detail/type_mat3x4.inl:
-
-C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/wow64apiset.h:
 
 C:/Users/Public/GMEngineTools/mingw64/x86_64-w64-mingw32/include/wtypes.h:
 
@@ -3901,8 +3980,6 @@ C:/Users/dvian/Downloads/GM\ Engine/thirdparty/glm/glm/ext/vector_int2.hpp:
 
 C:/Users/dvian/Downloads/GM\ Engine/thirdparty/glm/glm/ext/vector_int3_sized.hpp:
 
-C:/Users/dvian/Downloads/GM\ Engine/thirdparty/glm/glm/ext/vector_int4.hpp:
-
 C:/Users/dvian/Downloads/GM\ Engine/thirdparty/glm/glm/ext/vector_uint2.hpp:
 
 C:/Users/dvian/Downloads/GM\ Engine/thirdparty/glm/glm/ext/matrix_float4x2.hpp:
@@ -3944,8 +4021,6 @@ C:/Users/dvian/Downloads/GM\ Engine/thirdparty/imgui/imconfig.h:
 C:/Users/dvian/Downloads/GM\ Engine/thirdparty/imgui/imgui.h:
 
 C:/Users/dvian/Downloads/GM\ Engine/thirdparty/imguizmo/ImGuizmo.h:
-
-C:/Users/dvian/Downloads/GM\ Engine/thirdparty/json/nlohmann/json.hpp:
 
 C:/Users/dvian/Downloads/GM\ Engine/thirdparty/glm/glm/detail/compute_common.hpp:
 

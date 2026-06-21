@@ -24,6 +24,10 @@ public:
     std::string meshPath; // File path to imported 3D mesh (.obj, .gltf, .glb)
     int scriptLanguage; // 0 = Text Commands, 1 = C++
     
+    std::string username;
+    int accessoryType; // 0 = None, 1 = Hat (Sphere), 2 = Crown (Cylinder), 3 = Horns (Wedge)
+    glm::vec4 accessoryColor;
+    
     // Physics variables (only active if not anchored)
     glm::vec3 velocity;
 
@@ -31,7 +35,8 @@ public:
         : id(partId), name(partName), shape(PartShape::Block), material(PartMaterial::Plastic),
           position(0.0f, 2.0f, 0.0f), size(2.0f, 2.0f, 2.0f), rotation(0.0f, 0.0f, 0.0f),
           color(0.7f, 0.7f, 0.7f, 1.0f), transparency(0.0f), reflectance(0.0f),
-          anchored(true), canCollide(true), isPlayer(false), script(""), meshPath(""), scriptLanguage(0), velocity(0.0f, 0.0f, 0.0f) {}
+          anchored(true), canCollide(true), isPlayer(false), script(""), meshPath(""), scriptLanguage(0), velocity(0.0f, 0.0f, 0.0f),
+          username(""), accessoryType(0), accessoryColor(1.0f, 1.0f, 0.0f, 1.0f) {}
 
     nlohmann::json toJson() const {
         nlohmann::json j;
@@ -50,6 +55,9 @@ public:
         j["script"] = script;
         j["meshPath"] = meshPath;
         j["scriptLanguage"] = scriptLanguage;
+        j["username"] = username;
+        j["accessoryType"] = accessoryType;
+        j["accessoryColor"] = { accessoryColor.r, accessoryColor.g, accessoryColor.b, accessoryColor.a };
         return j;
     }
 
@@ -78,6 +86,11 @@ public:
         if (j.contains("script")) script = j["script"];
         if (j.contains("meshPath")) meshPath = j["meshPath"];
         if (j.contains("scriptLanguage")) scriptLanguage = j["scriptLanguage"];
+        if (j.contains("username")) username = j["username"];
+        if (j.contains("accessoryType")) accessoryType = j["accessoryType"];
+        if (j.contains("accessoryColor")) {
+            accessoryColor = glm::vec4(j["accessoryColor"][0], j["accessoryColor"][1], j["accessoryColor"][2], j["accessoryColor"][3]);
+        }
     }
 
     glm::mat4 getModelMatrix() const {

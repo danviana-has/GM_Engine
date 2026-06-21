@@ -22,5 +22,45 @@
         "fileSize": "4.9 MB",
         "id": "game_451229",
         "title": "My GM Game"
+    },
+    {
+        "binary": "games/test.exe",
+        "date": "2026-06-20",
+        "description": "A fun physics game built in GM Engine!",
+        "fileSize": "4.9 MB",
+        "id": "game_364091",
+        "title": "test"
+    },
+    {
+        "binary": "games/fuja.exe",
+        "date": "2026-06-20",
+        "description": "Fuja do inimigo!",
+        "fileSize": "4.9 MB",
+        "id": "game_217982",
+        "title": "Fuja!"
+    },
+    {
+        "binary": "games/fuja.exe",
+        "date": "2026-06-20",
+        "description": "Fuja do inimigo o mais rápido possivel",
+        "fileSize": "4.9 MB",
+        "id": "game_604911",
+        "title": "fuja!"
+    },
+    {
+        "binary": "games/a_casa_das_ias.exe",
+        "date": "2026-06-20",
+        "description": "Você nunca consegue sair dessa casa de robôs",
+        "fileSize": "5.0 MB",
+        "id": "game_305373",
+        "title": "A Casa das IAs"
+    },
+    {
+        "binary": "games/obby_game.exe",
+        "date": "2026-06-20",
+        "description": "Escape do Obby!",
+        "fileSize": "5.0 MB",
+        "id": "game_202366",
+        "title": "Obby Game"
     }
 ]

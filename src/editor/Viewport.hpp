@@ -186,11 +186,18 @@ public:
 
                 // Jump
                 if (ImGui::IsKeyPressed(ImGuiKey_Space) && physics.isGrounded(scene, playerPart)) {
-                    playerPart->velocity.y = 15.0f;
+                    playerPart->velocity.y = 26.0f;
                 }
             }
         } 
         else {
+            // Mouse Wheel Zoom
+            if (hovered && io.MouseWheel != 0.0f) {
+                float zoomAmt = io.MouseWheel * 3.0f;
+                if (io.KeyShift) zoomAmt *= 3.0f;
+                camera.position += camera.front * zoomAmt;
+            }
+
             // EDITOR MODE: WASD controls the free camera
             if (hovered && !io.WantCaptureKeyboard) {
                 bool shift = io.KeyShift;

@@ -2,30 +2,34 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#00f0ff">
+    <meta name="description" content="Explore, download, and play standalone 3D games published with GM Engine.">
     <title>GM Play - Explore GM Engine Games</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-dark: #08090c;
-            --bg-card: rgba(18, 20, 27, 0.7);
+            --bg-card: rgba(18, 20, 27, 0.75);
             --primary: #00f0ff;
-            --primary-glow: rgba(0, 240, 255, 0.4);
+            --primary-glow: rgba(0, 240, 255, 0.35);
             --secondary: #9d00ff;
-            --secondary-glow: rgba(157, 0, 255, 0.4);
+            --secondary-glow: rgba(157, 0, 255, 0.35);
             --text-main: #f3f4f6;
             --text-muted: #9ca3af;
             --border: rgba(255, 255, 255, 0.08);
             --border-hover: rgba(0, 240, 255, 0.3);
+            --header-h: 72px;
+            --safe-top: env(safe-area-inset-top, 0px);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
 
         body {
             font-family: 'Outfit', sans-serif;
@@ -33,27 +37,30 @@
             color: var(--text-main);
             min-height: 100vh;
             overflow-x: hidden;
-            background-image: 
-                radial-gradient(circle at 10% 20%, rgba(157, 0, 255, 0.08) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(0, 240, 255, 0.08) 0%, transparent 40%);
+            background-image:
+                radial-gradient(circle at 10% 20%, rgba(157,0,255,.09) 0%, transparent 45%),
+                radial-gradient(circle at 90% 80%, rgba(0,240,255,.09) 0%, transparent 45%);
             background-attachment: fixed;
         }
 
+        /* ── HEADER ── */
         header {
-            padding: 2.5rem 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--border);
-            backdrop-filter: blur(10px);
             position: sticky;
             top: 0;
-            z-index: 100;
-            background: rgba(8, 9, 12, 0.8);
+            z-index: 200;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: calc(var(--safe-top) + .8rem) 5% .8rem;
+            height: calc(var(--header-h) + var(--safe-top));
+            background: rgba(8,9,12,.85);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border);
         }
 
         .logo {
-            font-size: 1.8rem;
+            font-size: clamp(1.3rem, 4vw, 1.8rem);
             font-weight: 800;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             -webkit-background-clip: text;
@@ -62,58 +69,93 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            white-space: nowrap;
+            flex-shrink: 0;
         }
 
         .logo::before {
             content: '';
             display: inline-block;
-            width: 14px;
-            height: 14px;
+            width: 13px; height: 13px;
             background: var(--primary);
             box-shadow: 0 0 10px var(--primary-glow);
             border-radius: 3px;
+            flex-shrink: 0;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: .75rem;
+            flex: 1;
+            justify-content: flex-end;
         }
 
         .search-box {
             position: relative;
-            width: 300px;
+            width: min(280px, 100%);
         }
 
         .search-box input {
             width: 100%;
-            padding: 0.75rem 1.25rem;
-            background: rgba(255, 255, 255, 0.05);
+            padding: .65rem 1.1rem;
+            background: rgba(255,255,255,.05);
             border: 1px solid var(--border);
             border-radius: 30px;
             color: var(--text-main);
             font-family: inherit;
+            font-size: .95rem;
             outline: none;
-            transition: all 0.3s ease;
+            transition: all .3s ease;
         }
 
         .search-box input:focus {
             border-color: var(--primary);
-            background: rgba(255, 255, 255, 0.08);
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.15);
+            background: rgba(255,255,255,.08);
+            box-shadow: 0 0 15px rgba(0,240,255,.12);
         }
 
+        /* ── INSTALL BUTTON ── */
+        #install-btn {
+            display: none;
+            align-items: center;
+            gap: 6px;
+            padding: .55rem 1rem;
+            border-radius: 30px;
+            border: 1px solid var(--primary);
+            background: rgba(0,240,255,.1);
+            color: var(--primary);
+            font-family: inherit;
+            font-weight: 600;
+            font-size: .85rem;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all .3s ease;
+        }
+
+        #install-btn.visible { display: flex; }
+        #install-btn:hover { background: rgba(0,240,255,.2); }
+
+        /* ── MAIN ── */
         main {
-            max-width: 1300px;
+            max-width: 1320px;
             margin: 0 auto;
-            padding: 3rem 5%;
+            padding: 2.5rem 5% 5rem;
         }
 
+        /* ── HERO ── */
         .hero {
             text-align: center;
-            margin-bottom: 4rem;
-            animation: fadeIn 1s ease;
+            margin-bottom: clamp(2rem, 6vw, 4rem);
+            animation: fadeUp .8s ease both;
         }
 
         .hero h1 {
-            font-size: 3rem;
+            font-size: clamp(1.8rem, 6vw, 3.2rem);
             font-weight: 800;
-            margin-bottom: 1rem;
-            letter-spacing: -0.5px;
+            margin-bottom: .75rem;
+            letter-spacing: -.5px;
+            line-height: 1.1;
         }
 
         .hero h1 span {
@@ -123,16 +165,44 @@
 
         .hero p {
             color: var(--text-muted);
-            font-size: 1.2rem;
-            max-width: 600px;
+            font-size: clamp(.95rem, 2.5vw, 1.15rem);
+            max-width: 560px;
             margin: 0 auto;
-            line-height: 1.6;
+            line-height: 1.65;
         }
 
-        .section-title {
-            font-size: 1.6rem;
-            font-weight: 600;
+        /* ── FILTER BAR ── */
+        .filter-bar {
+            display: flex;
+            gap: .5rem;
             margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: .45rem 1rem;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-muted);
+            font-family: inherit;
+            font-size: .85rem;
+            cursor: pointer;
+            transition: all .25s ease;
+        }
+
+        .filter-btn.active,
+        .filter-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: rgba(0,240,255,.08);
+        }
+
+        /* ── SECTION TITLE ── */
+        .section-title {
+            font-size: clamp(1.1rem, 3vw, 1.5rem);
+            font-weight: 600;
+            margin-bottom: 1.5rem;
             display: flex;
             align-items: center;
             gap: 12px;
@@ -145,234 +215,436 @@
             background: var(--border);
         }
 
+        /* ── GAMES GRID ── */
         .games-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fill, minmax(min(340px, 100%), 1fr));
+            gap: clamp(1rem, 3vw, 2rem);
         }
 
+        /* ── GAME CARD ── */
         .game-card {
             background: var(--bg-card);
             border: 1px solid var(--border);
             border-radius: 16px;
-            padding: 2rem;
+            padding: clamp(1.2rem, 3vw, 1.8rem);
             backdrop-filter: blur(8px);
-            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            transition: transform .35s cubic-bezier(.165,.84,.44,1), border-color .35s, box-shadow .35s;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             position: relative;
             overflow: hidden;
+            animation: fadeUp .6s ease both;
         }
 
         .game-card::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
+            top: 0; left: 0;
+            width: 100%; height: 3px;
             background: linear-gradient(90deg, var(--primary), var(--secondary));
             opacity: 0;
-            transition: opacity 0.3s ease;
+            transition: opacity .3s;
         }
 
-        .game-card:hover {
-            transform: translateY(-8px);
-            border-color: var(--border-hover);
-            box-shadow: 
-                0 12px 40px rgba(0, 0, 0, 0.4),
-                0 0 20px rgba(0, 240, 255, 0.05);
-        }
+        .game-card:hover { transform: translateY(-6px); border-color: var(--border-hover); box-shadow: 0 12px 36px rgba(0,0,0,.4), 0 0 18px rgba(0,240,255,.05); }
+        .game-card:hover::before { opacity: 1; }
 
-        .game-card:hover::before {
-            opacity: 1;
+        /* touch active state */
+        @media (hover: none) {
+            .game-card:active { transform: scale(.98); border-color: var(--border-hover); }
+            .game-card:hover { transform: none; box-shadow: none; }
         }
 
         .game-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 1.25rem;
+            gap: .75rem;
+            margin-bottom: 1rem;
         }
 
         .game-title {
-            font-size: 1.4rem;
+            font-size: clamp(1.1rem, 3vw, 1.3rem);
             font-weight: 600;
-            color: var(--text-main);
         }
 
         .game-date {
-            font-size: 0.85rem;
+            font-size: .8rem;
             color: var(--text-muted);
-            background: rgba(255, 255, 255, 0.05);
-            padding: 0.25rem 0.75rem;
+            background: rgba(255,255,255,.05);
+            padding: .2rem .65rem;
             border-radius: 20px;
             border: 1px solid var(--border);
+            white-space: nowrap;
+            flex-shrink: 0;
         }
 
         .game-desc {
-            font-size: 0.95rem;
+            font-size: .92rem;
             color: var(--text-muted);
             line-height: 1.6;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
             flex-grow: 1;
         }
 
+        /* ── PLATFORM BADGES ── */
+        .platform-badges {
+            display: flex;
+            gap: .4rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+
+        .badge {
+            font-size: .75rem;
+            font-weight: 600;
+            padding: .2rem .6rem;
+            border-radius: 12px;
+            border: 1px solid;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .badge-pc {
+            color: #60a5fa;
+            border-color: rgba(96,165,250,.35);
+            background: rgba(96,165,250,.08);
+        }
+
+        .badge-android {
+            color: #4ade80;
+            border-color: rgba(74,222,128,.35);
+            background: rgba(74,222,128,.08);
+        }
+
+        /* ── GAME FOOTER ── */
         .game-footer {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: .75rem;
             border-top: 1px solid var(--border);
-            padding-top: 1.25rem;
+            padding-top: 1.1rem;
         }
 
         .game-size {
-            font-size: 0.9rem;
+            font-size: .88rem;
             font-weight: 600;
             color: var(--primary);
         }
 
-        .play-btn {
-            background: linear-gradient(135deg, var(--primary), #00b8ff);
-            color: #000;
-            font-weight: 600;
-            padding: 0.65rem 1.5rem;
-            border-radius: 30px;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px var(--primary-glow);
+        .download-btns {
+            display: flex;
+            gap: .5rem;
+            flex-wrap: wrap;
+        }
+
+        .dl-btn {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
+            padding: .6rem 1.2rem;
+            border-radius: 30px;
+            font-family: inherit;
+            font-weight: 600;
+            font-size: .88rem;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all .3s ease;
+            min-height: 44px;
         }
 
-        .play-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 20px rgba(0, 240, 255, 0.6);
+        .dl-btn-pc {
+            background: linear-gradient(135deg, var(--primary), #00b8ff);
+            color: #000;
+            box-shadow: 0 4px 14px var(--primary-glow);
         }
 
+        .dl-btn-pc:hover { transform: scale(1.05); box-shadow: 0 6px 20px rgba(0,240,255,.55); }
+
+        .dl-btn-apk {
+            background: linear-gradient(135deg, #4ade80, #22c55e);
+            color: #000;
+            box-shadow: 0 4px 14px rgba(74,222,128,.35);
+        }
+
+        .dl-btn-apk:hover { transform: scale(1.05); box-shadow: 0 6px 20px rgba(74,222,128,.55); }
+
+        /* ── EMPTY STATE ── */
         .no-games {
             text-align: center;
             grid-column: 1 / -1;
-            padding: 4rem 2rem;
+            padding: clamp(2rem, 6vw, 4rem) 2rem;
             background: var(--bg-card);
             border: 1px dashed var(--border);
             border-radius: 16px;
             color: var(--text-muted);
         }
 
+        .no-games h3 { font-size: 1.2rem; margin-bottom: .5rem; color: var(--text-main); }
+
+        /* ── FOOTER ── */
         footer {
             text-align: center;
-            padding: 4rem 2rem;
+            padding: 3rem 2rem;
             color: var(--text-muted);
-            font-size: 0.9rem;
+            font-size: .88rem;
             border-top: 1px solid var(--border);
-            margin-top: 5rem;
+            margin-top: 4rem;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* ── ANIMATIONS ── */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(18px); }
+            to   { opacity: 1; transform: translateY(0); }
         }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 600px) {
+            header { padding-left: 4%; padding-right: 4%; }
+            main   { padding-left: 4%; padding-right: 4%; }
+
+            .search-box { width: 100%; max-width: 200px; }
+            .search-box input { font-size: .85rem; padding: .55rem .9rem; }
+
+            #install-btn { font-size: .78rem; padding: .45rem .75rem; }
+
+            .game-footer { flex-direction: column; align-items: flex-start; }
+            .download-btns { width: 100%; }
+            .dl-btn { flex: 1; justify-content: center; }
+        }
+
+        @media (max-width: 400px) {
+            .logo { font-size: 1.2rem; }
+            .logo::before { width: 10px; height: 10px; }
+        }
+
+        /* ── TOAST (install prompt) ── */
+        #pwa-toast {
+            position: fixed;
+            bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px));
+            left: 50%; transform: translateX(-50%);
+            background: rgba(18,20,27,.95);
+            border: 1px solid var(--primary);
+            border-radius: 14px;
+            padding: 1rem 1.4rem;
+            display: none;
+            align-items: center;
+            gap: 1rem;
+            box-shadow: 0 8px 32px rgba(0,0,0,.5);
+            backdrop-filter: blur(12px);
+            z-index: 500;
+            max-width: calc(100vw - 2rem);
+            animation: fadeUp .4s ease;
+        }
+
+        #pwa-toast.show { display: flex; }
+        #pwa-toast p { font-size: .9rem; color: var(--text-main); }
+        #pwa-toast p strong { color: var(--primary); }
+
+        .toast-btn {
+            padding: .45rem .9rem;
+            border-radius: 20px;
+            border: none;
+            font-family: inherit;
+            font-weight: 600;
+            font-size: .85rem;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .toast-install { background: var(--primary); color: #000; }
+        .toast-dismiss { background: transparent; color: var(--text-muted); border: 1px solid var(--border); }
     </style>
 </head>
 <body>
 
     <header>
         <div class="logo">GM Play</div>
-        <div class="search-box">
-            <input type="text" id="search" placeholder="Search games...">
+        <div class="header-right">
+            <div class="search-box">
+                <input type="text" id="search" placeholder="Search games…" autocomplete="off">
+            </div>
+            <button id="install-btn" aria-label="Install GM Play app">
+                ⬇ Install App
+            </button>
         </div>
     </header>
 
     <main>
         <section class="hero">
             <h1>Welcome to <span>GM Play</span></h1>
-            <p>Explore, download, and play standalone 3D games published directly from the GM Engine creator studio.</p>
+            <p>Explore, download and play standalone 3D games published directly from GM Engine.</p>
         </section>
+
+        <div class="filter-bar">
+            <button class="filter-btn active" data-filter="all">All Games</button>
+            <button class="filter-btn" data-filter="pc">🖥 PC</button>
+            <button class="filter-btn" data-filter="android">📱 Android</button>
+        </div>
 
         <h2 class="section-title">Available Creations</h2>
 
         <div class="games-grid" id="games-container">
-            <!-- Games will be loaded here dynamically -->
+            <!-- populated by JS -->
         </div>
     </main>
 
     <footer>
-        <p>&copy; 2026 GM Play. Created with GM Engine.</p>
+        <p>&copy; 2026 GM Play &mdash; Powered by <strong style="color:var(--primary)">GM Engine</strong></p>
     </footer>
 
-    <!-- games.js is generated by GM Engine when you publish a game. It sets window.gmPlayGames. -->
+    <!-- PWA install toast -->
+    <div id="pwa-toast">
+        <p>📱 Install <strong>GM Play</strong> as an app on your device!</p>
+        <button class="toast-btn toast-install" id="toast-install">Install</button>
+        <button class="toast-btn toast-dismiss" id="toast-dismiss">Later</button>
+    </div>
+
+    <!-- games.js is generated by GM Engine when you publish a game. Sets window.gmPlayGames. -->
     <script src="games.js"></script>
     <script>
-        const container = document.getElementById('games-container');
+        /* ── Data ── */
+        const container  = document.getElementById('games-container');
         const searchInput = document.getElementById('search');
-        let allGames = [];
+        let allGames  = [];
+        let activeFilter = 'all';
 
         function loadGames() {
-            // Use the global variable injected by games.js (avoids CORS on file:// protocol)
             if (typeof gmPlayGames !== 'undefined' && Array.isArray(gmPlayGames)) {
                 allGames = gmPlayGames;
             } else {
                 allGames = [];
             }
-            renderGames(allGames);
+            applyFilters();
         }
 
+        /* ── Filtering ── */
+        function applyFilters() {
+            const query = searchInput.value.toLowerCase();
+            let list = allGames;
+
+            if (activeFilter === 'pc')      list = list.filter(g => g.binary);
+            if (activeFilter === 'android') list = list.filter(g => g.apk);
+
+            if (query) {
+                list = list.filter(g =>
+                    g.title.toLowerCase().includes(query) ||
+                    (g.description || '').toLowerCase().includes(query)
+                );
+            }
+            renderGames(list);
+        }
+
+        /* ── Render ── */
         function renderGames(games) {
             container.innerHTML = '';
-            if (games.length === 0) {
+            if (!games.length) {
                 container.innerHTML = `
                     <div class="no-games">
                         <h3>No games found</h3>
                         <p>Publish your first game from GM Engine to see it here!</p>
-                    </div>
-                `;
+                    </div>`;
                 return;
             }
 
-            games.forEach(game => {
+            games.forEach((game, i) => {
                 const card = document.createElement('div');
                 card.className = 'game-card';
+                card.style.animationDelay = `${i * 60}ms`;
+
+                const badges = [
+                    game.binary ? '<span class="badge badge-pc">🖥 PC</span>' : '',
+                    game.apk    ? '<span class="badge badge-android">📱 Android</span>' : ''
+                ].join('');
+
+                const dlButtons = [
+                    game.binary ? `<a href="${esc(game.binary)}" class="dl-btn dl-btn-pc" download>⬇ Download PC</a>` : '',
+                    game.apk    ? `<a href="${esc(game.apk)}"    class="dl-btn dl-btn-apk" download>⬇ Download APK</a>` : ''
+                ].join('');
+
                 card.innerHTML = `
                     <div>
                         <div class="game-header">
-                            <h3 class="game-title">${escapeHtml(game.title)}</h3>
-                            <span class="game-date">${escapeHtml(game.date)}</span>
+                            <h3 class="game-title">${esc(game.title)}</h3>
+                            <span class="game-date">${esc(game.date || '')}</span>
                         </div>
-                        <p class="game-desc">${escapeHtml(game.description)}</p>
+                        <p class="game-desc">${esc(game.description || '')}</p>
+                        <div class="platform-badges">${badges}</div>
                     </div>
                     <div class="game-footer">
-                        <span class="game-size">${escapeHtml(game.fileSize)}</span>
-                        <a href="${game.binary}" class="play-btn" download>
-                            Download Game
-                        </a>
-                    </div>
-                `;
+                        <span class="game-size">${esc(game.fileSize || '')}</span>
+                        <div class="download-btns">${dlButtons}</div>
+                    </div>`;
                 container.appendChild(card);
             });
         }
 
-        function escapeHtml(str) {
-            return str
-                .replace(/&/g, "&amp;")
-                .replace(/</g, "&lt;")
-                .replace(/>/g, "&gt;")
-                .replace(/"/g, "&quot;")
-                .replace(/'/g, "&#039;");
+        function esc(str) {
+            return String(str)
+                .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+                .replace(/>/g,'&gt;').replace(/"/g,'&quot;')
+                .replace(/'/g,'&#039;');
         }
 
-        searchInput.addEventListener('input', (e) => {
-            const query = e.target.value.toLowerCase();
-            const filtered = allGames.filter(game => 
-                game.title.toLowerCase().includes(query) || 
-                game.description.toLowerCase().includes(query)
-            );
-            renderGames(filtered);
+        /* ── Search ── */
+        searchInput.addEventListener('input', applyFilters);
+
+        /* ── Platform filter buttons ── */
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                activeFilter = btn.dataset.filter;
+                applyFilters();
+            });
         });
 
-        // Initialize – no async needed since games.js is already parsed by the browser
+        /* ── PWA Install prompt ── */
+        let deferredPrompt = null;
+        const installBtn  = document.getElementById('install-btn');
+        const toast       = document.getElementById('pwa-toast');
+        const toastInstall = document.getElementById('toast-install');
+        const toastDismiss = document.getElementById('toast-dismiss');
+
+        window.addEventListener('beforeinstallprompt', e => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installBtn.classList.add('visible');
+            // Show toast after 3s
+            setTimeout(() => toast.classList.add('show'), 3000);
+        });
+
+        async function triggerInstall() {
+            if (!deferredPrompt) return;
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            if (outcome === 'accepted') {
+                installBtn.classList.remove('visible');
+                toast.classList.remove('show');
+            }
+            deferredPrompt = null;
+        }
+
+        installBtn.addEventListener('click', triggerInstall);
+        toastInstall.addEventListener('click', () => { toast.classList.remove('show'); triggerInstall(); });
+        toastDismiss.addEventListener('click', () => toast.classList.remove('show'));
+
+        window.addEventListener('appinstalled', () => {
+            installBtn.classList.remove('visible');
+            toast.classList.remove('show');
+        });
+
+        /* ── Service Worker ── */
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('./sw.js').catch(() => {});
+        }
+
+        /* ── Init ── */
         loadGames();
     </script>
 </body>

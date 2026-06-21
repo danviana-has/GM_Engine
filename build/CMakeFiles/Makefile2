@@ -63,6 +63,7 @@ CMAKE_BINARY_DIR = "C:\Users\dvian\Downloads\GM Engine\build"
 
 # The main recursive "all" target.
 all: CMakeFiles/GMEngine.dir/all
+all: CMakeFiles/GMPlay.dir/all
 .PHONY : all
 
 # The main recursive "preinstall" target.
@@ -71,6 +72,7 @@ preinstall:
 
 # The main recursive "clean" target.
 clean: CMakeFiles/GMEngine.dir/clean
+clean: CMakeFiles/GMPlay.dir/clean
 .PHONY : clean
 
 #=============================================================================
@@ -98,6 +100,32 @@ GMEngine: CMakeFiles/GMEngine.dir/rule
 CMakeFiles/GMEngine.dir/clean:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\GMEngine.dir\build.make CMakeFiles/GMEngine.dir/clean
 .PHONY : CMakeFiles/GMEngine.dir/clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/GMPlay.dir
+
+# All Build rule for target.
+CMakeFiles/GMPlay.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\GMPlay.dir\build.make CMakeFiles/GMPlay.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\GMPlay.dir\build.make CMakeFiles/GMPlay.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="C:\Users\dvian\Downloads\GM Engine\build\CMakeFiles" --progress-num=11,12,13,14,15,16,17,18,19,20 "Built target GMPlay"
+.PHONY : CMakeFiles/GMPlay.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/GMPlay.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start "C:\Users\dvian\Downloads\GM Engine\build\CMakeFiles" 10
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 CMakeFiles/GMPlay.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start "C:\Users\dvian\Downloads\GM Engine\build\CMakeFiles" 0
+.PHONY : CMakeFiles/GMPlay.dir/rule
+
+# Convenience name for target.
+GMPlay: CMakeFiles/GMPlay.dir/rule
+.PHONY : GMPlay
+
+# clean rule for target.
+CMakeFiles/GMPlay.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\GMPlay.dir\build.make CMakeFiles/GMPlay.dir/clean
+.PHONY : CMakeFiles/GMPlay.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

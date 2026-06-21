@@ -5,6 +5,7 @@
 #include "MeshImporter.hpp"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <imgui.h>
 
 class Renderer {
 public:
@@ -196,6 +197,59 @@ public:
                 rightArm = glm::scale(rightArm, glm::vec3(0.35f, 1.3f, 0.35f));
                 drawCharBlock(rightArm, skinColor, PartMaterial::Plastic);
                 
+                // 9. Draw Custom Accessory on top of the head
+                if (part->accessoryType > 0) {
+                    glm::mat4 accMat = glm::translate(baseModel, glm::vec3(0.0f, 1.85f, 0.0f)); // Just above head
+                    glm::vec4 accColor = part->accessoryColor;
+                    
+                    if (part->accessoryType == 1) { // Sphere Hat
+                        accMat = glm::scale(accMat, glm::vec3(0.6f, 0.6f, 0.6f));
+                        glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "uModel"), 1, GL_FALSE, glm::value_ptr(accMat));
+                        glUniform4fv(glGetUniformLocation(shaderProgram, "uColor"), 1, glm::value_ptr(accColor));
+                        glUniform1i(glGetUniformLocation(shaderProgram, "uMaterialType"), static_cast<int>(PartMaterial::Neon));
+                        glBindVertexArray(sphereVAO);
+                        glDrawElements(GL_TRIANGLES, sphereIndexCount, GL_UNSIGNED_INT, 0);
+                    }
+                    else if (part->accessoryType == 2) { // Cylinder Crown
+                        accMat = glm::scale(accMat, glm::vec3(0.7f, 0.3f, 0.7f));
+                        glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "uModel"), 1, GL_FALSE, glm::value_ptr(accMat));
+                        glUniform4fv(glGetUniformLocation(shaderProgram, "uColor"), 1, glm::value_ptr(accColor));
+                        glUniform1i(glGetUniformLocation(shaderProgram, "uMaterialType"), static_cast<int>(PartMaterial::Metal));
+                        glBindVertexArray(cylinderVAO);
+                        glDrawElements(GL_TRIANGLES, cylinderIndexCount, GL_UNSIGNED_INT, 0);
+                    }
+                    else if (part->accessoryType == 3) { // Wedge Horns
+                        accMat = glm::scale(accMat, glm::vec3(0.5f, 0.5f, 0.5f));
+                        glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "uModel"), 1, GL_FALSE, glm::value_ptr(accMat));
+                        glUniform4fv(glGetUniformLocation(shaderProgram, "uColor"), 1, glm::value_ptr(accColor));
+                        glUniform1i(glGetUniformLocation(shaderProgram, "uMaterialType"), static_cast<int>(PartMaterial::Plastic));
+                        glBindVertexArray(wedgeVAO);
+                        glDrawArrays(GL_TRIANGLES, 0, 36);
+                    }
+                }
+
+                // 10. Project 3D position to 2D screen coordinates for Nameplate
+                glm::vec3 headWorldPos = part->position + glm::vec3(0.0f, 2.3f, 0.0f);
+                glm::vec4 ndc = projection * view * glm::vec4(headWorldPos, 1.0f);
+                if (ndc.w > 0.0f) {
+                    glm::vec3 winCoords = glm::vec3(ndc) / ndc.w;
+                    float screenX = (winCoords.x * 0.5f + 0.5f) * viewportWidth;
+                    float screenY = (-winCoords.y * 0.5f + 0.5f) * viewportHeight;
+                    
+                    std::string label = part->username.empty() ? part->name : part->username;
+                    
+                    // Draw nameplate with ImGui
+                    ImGui::SetNextWindowPos(ImVec2(screenX - 75.0f, screenY - 15.0f));
+                    ImGui::SetNextWindowSize(ImVec2(150.0f, 30.0f));
+                    ImGui::Begin((std::string("##name_") + std::to_string(part->id)).c_str(), nullptr, 
+                        ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_NoNav);
+                    
+                    float textWidth = ImGui::CalcTextSize(label.c_str()).x;
+                    ImGui::SetCursorPosX((150.0f - textWidth) * 0.5f);
+                    ImGui::TextColored(ImVec4(1, 1, 1, 1), "%s", label.c_str());
+                    ImGui::End();
+                }
+
                 continue;
             }
 

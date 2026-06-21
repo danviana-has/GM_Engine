@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#08090c">
+    <title>GM Engine</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00f0ff;
+            --secondary: #9d00ff;
+            --bg: #08090c;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html, body {
+            width: 100%; height: 100%;
+            overflow: hidden;
+            background: var(--bg);
+            font-family: 'Outfit', sans-serif;
+            touch-action: none;
+        }
+
+        /* ── Loading Screen ── */
+        #loading-screen {
+            position: fixed;
+            inset: 0;
+            background: var(--bg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            z-index: 1000;
+            transition: opacity .6s ease;
+        }
+
+        #loading-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .logo-loading {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 2px;
+        }
+
+        .loading-bar-wrap {
+            width: min(320px, 80vw);
+            height: 4px;
+            background: rgba(255,255,255,.08);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .loading-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 4px;
+            transition: width .3s ease;
+            box-shadow: 0 0 12px var(--primary);
+        }
+
+        .loading-label {
+            color: rgba(255,255,255,.4);
+            font-size: .9rem;
+        }
+
+        /* ── Canvas ── */
+        #canvas {
+            display: block;
+            width: 100vw !important;
+            height: 100vh !important;
+            position: absolute;
+            top: 0; left: 0;
+        }
+
+        /* ── Mobile overlay controls ── */
+        #mobile-controls {
+            display: none;
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 50;
+        }
+
+        @media (pointer: coarse) {
+            #mobile-controls { display: block; }
+        }
+
+        /* Virtual keyboard shortcut buttons */
+        .vk-bar {
+            position: absolute;
+            bottom: env(safe-area-inset-bottom, 12px);
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            pointer-events: all;
+        }
+
+        .vk-btn {
+            width: 52px; height: 52px;
+            border-radius: 12px;
+            border: 1px solid rgba(0,240,255,.3);
+            background: rgba(8,9,12,.8);
+            color: var(--primary);
+            font-family: 'Outfit', sans-serif;
+            font-size: .75rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 2px;
+            backdrop-filter: blur(8px);
+            transition: background .2s;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .vk-btn:active { background: rgba(0,240,255,.15); }
+        .vk-btn span { font-size: 1.1rem; }
+
+        /* Pinch-to-zoom hint */
+        #touch-hint {
+            position: absolute;
+            top: 16px; left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,.6);
+            color: rgba(255,255,255,.5);
+            font-size: .75rem;
+            padding: .3rem .8rem;
+            border-radius: 20px;
+            pointer-events: none;
+            animation: fadeOut 3s ease 2s forwards;
+        }
+
+        @keyframes fadeOut { to { opacity: 0; } }
+    </style>
+</head>
+<body>
+
+    <!-- Loading screen -->
+    <div id="loading-screen">
+        <div class="logo-loading">GM Engine</div>
+        <div class="loading-bar-wrap">
+            <div class="loading-bar" id="loading-bar"></div>
+        </div>
+        <div class="loading-label" id="loading-label">Initializing WebAssembly…</div>
+    </div>
+
+    <!-- Main canvas (Emscripten renders here) -->
+    <canvas id="canvas" oncontextmenu="event.preventDefault()"></canvas>
+
+    <!-- Mobile overlay controls -->
+    <div id="mobile-controls">
+        <div id="touch-hint">Use two fingers to pan · Pinch to zoom</div>
+        <div class="vk-bar">
+            <button class="vk-btn" onclick="sendKey('w')" title="Move (W)">
+                <span>▲</span><small>Move</small>
+            </button>
+            <button class="vk-btn" onclick="sendKey(' ')" title="Jump (Space)">
+                <span>⬆</span><small>Jump</small>
+            </button>
+            <button class="vk-btn" onclick="sendKey('e')" title="Gizmo Rotate (E)">
+                <span>↻</span><small>Rot</small>
+            </button>
+            <button class="vk-btn" onclick="sendKey('r')" title="Gizmo Scale (R)">
+                <span>⤡</span><small>Scale</small>
+            </button>
+            <button class="vk-btn" onclick="sendKey('p')" title="Play/Stop (P)">
+                <span>▶</span><small>Play</small>
+            </button>
+        </div>
+    </div>
+
+    <!-- Emscripten glue script -->
+    {{{ SCRIPT }}}
+
+    <script>
+        // ── Loading progress ──────────────────────────────────────────────────
+        var Module = Module || {};
+        Module.canvas = document.getElementById('canvas');
+        Module.printErr = function(msg) { console.warn('[GM Engine]', msg); };
+
+        // Progress callback from Emscripten
+        Module.setStatus = function(text) {
+            var label = document.getElementById('loading-label');
+            var bar   = document.getElementById('loading-bar');
+            if (!text) {
+                // Loading complete
+                var screen = document.getElementById('loading-screen');
+                bar.style.width = '100%';
+                setTimeout(function() { screen.classList.add('hidden'); }, 500);
+            } else {
+                label.textContent = text;
+                // Parse "x/y" progress from Emscripten's status
+                var match = text.match(/(\d+)\/(\d+)/);
+                if (match) {
+                    bar.style.width = (parseInt(match[1]) / parseInt(match[2]) * 100) + '%';
+                }
+            }
+        };
+
+        Module.onRuntimeInitialized = function() {
+            Module.setStatus('');
+        };
+
+        // ── Virtual key helper ────────────────────────────────────────────────
+        function sendKey(key) {
+            var code = key === ' ' ? 32 : key.charCodeAt(0);
+            var opts = { bubbles: true, cancelable: true, keyCode: code, which: code };
+            Module.canvas.dispatchEvent(new KeyboardEvent('keydown', opts));
+            setTimeout(function() {
+                Module.canvas.dispatchEvent(new KeyboardEvent('keyup', opts));
+            }, 80);
+        }
+
+        // ── Resize handler ────────────────────────────────────────────────────
+        function resizeCanvas() {
+            Module.canvas.width  = window.innerWidth;
+            Module.canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        // ── Prevent default touch scroll on canvas ────────────────────────────
+        document.addEventListener('touchmove', function(e) {
+            if (e.target === Module.canvas) e.preventDefault();
+        }, { passive: false });
+    </script>
+</body>
+</html>

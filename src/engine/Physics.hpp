@@ -65,6 +65,21 @@ public:
         // Cap dt to prevent huge steps when lagging
         if (dt > 0.1f) dt = 0.1f;
 
+        // Find player part first
+        std::shared_ptr<Part> playerPart = nullptr;
+        for (const auto& part : scene.workspace) {
+            if (part->isPlayer) {
+                playerPart = part;
+                break;
+            }
+        }
+
+        // Initialize checkpoint to player's starting spawn point if it hasn't been set yet
+        if (playerPart && !ScriptEngine::hasCheckpoint) {
+            ScriptEngine::currentCheckpoint = playerPart->position;
+            ScriptEngine::hasCheckpoint = true;
+        }
+
         // 0. Run C++ scripting updates
         for (auto& part : scene.workspace) {
             if (part->isPlayer || part->script.empty() || part->scriptLanguage != 1) continue;
@@ -97,6 +112,20 @@ public:
                 state.isGrounded = isGrounded(scene, part);
                 state.dt = dt;
                 
+                state.isTouchingPlayer = false;
+                if (playerPart && ScriptEngine::checkAABBOverlap(part, playerPart)) {
+                    state.isTouchingPlayer = true;
+                }
+                state.playerNeedsRespawn = ScriptEngine::playerNeedsRespawn;
+                
+                state.isColliding = false;
+                for (const auto& other : scene.workspace) {
+                    if (other->id != part->id && other->canCollide && ScriptEngine::checkAABBOverlap(part, other)) {
+                        state.isColliding = true;
+                        break;
+                    }
+                }
+                
                 CppCompiler::executeScript(part->id, &state);
                 
                 part->position = glm::vec3(state.position[0], state.position[1], state.position[2]);
@@ -106,26 +135,15 @@ public:
                 part->velocity = glm::vec3(state.velocity[0], state.velocity[1], state.velocity[2]);
                 part->anchored = state.anchored;
                 part->canCollide = state.canCollide;
+                
+                if (state.playerNeedsRespawn) {
+                    ScriptEngine::playerNeedsRespawn = true;
+                }
             }
         }
 
         // Run scripting engine updates (for text scripts)
         ScriptEngine::runUpdate(scene, dt);
-
-        // Find player part
-        std::shared_ptr<Part> playerPart = nullptr;
-        for (auto& part : scene.workspace) {
-            if (part->isPlayer) {
-                playerPart = part;
-                break;
-            }
-        }
-
-        // Initialize checkpoint to player's starting spawn point if it hasn't been set yet
-        if (playerPart && !ScriptEngine::hasCheckpoint) {
-            ScriptEngine::currentCheckpoint = playerPart->position;
-            ScriptEngine::hasCheckpoint = true;
-        }
 
         // 1. Apply gravity and update position of unanchored parts
         for (auto& part : scene.workspace) {
@@ -207,6 +225,23 @@ private:
                 bool overlapZ = (a.minBound.z <= b.maxBound.z && a.maxBound.z >= b.minBound.z);
 
                 if (overlapX && overlapY && overlapZ) {
+                    // If one of the parts is a Bullet, apply custom physics
+                    if (partA->name == "Bullet" || partB->name == "Bullet") {
+                        auto bullet = (partA->name == "Bullet") ? partA : partB;
+                        auto target = (partA->name == "Bullet") ? partB : partA;
+                        
+                        if (target->isPlayer) {
+                            ScriptEngine::playerNeedsRespawn = true;
+                            ScriptEngine::consoleMsg = "Player was hit by bullet and died! Respawns.";
+                        } else if (!target->anchored) {
+                            // Make it fly away!
+                            glm::vec3 pushDirection = glm::normalize(target->position - bullet->position);
+                            // Avoid NaN
+                            if (glm::length(pushDirection) < 0.01f) pushDirection = glm::vec3(0, 1, 0);
+                            target->velocity = pushDirection * 45.0f; // Fly away!
+                        }
+                    }
+
                     // Collision detected! Calculate overlaps on all axes
                     float dx1 = b.maxBound.x - a.minBound.x;
                     float dx2 = a.maxBound.x - b.minBound.x;

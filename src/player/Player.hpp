@@ -85,7 +85,7 @@ public:
 
         // Jump
         if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS && physics.isGrounded(scene, playerPart)) {
-            playerPart->velocity.y = 15.0f;
+            playerPart->velocity.y = 26.0f;
         }
     }
 

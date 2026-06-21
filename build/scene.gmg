@@ -1,0 +1,608 @@
+{
+    "ambientColor": [
+        0.4000000059604645,
+        0.4000000059604645,
+        0.4000000059604645
+    ],
+    "skyColor": [
+        0.5299999713897705,
+        0.8100000023841858,
+        0.9200000166893005
+    ],
+    "starterGui": [],
+    "sunDirection": [
+        0.4319342076778412,
+        -0.8638684153556824,
+        0.2591605484485626
+    ],
+    "workspace": [
+        {
+            "accessoryColor": [
+                1.0,
+                1.0,
+                0.0,
+                1.0
+            ],
+            "accessoryType": 0,
+            "anchored": true,
+            "canCollide": true,
+            "color": [
+                0.5343137383460999,
+                0.09429065138101578,
+                0.09429065138101578,
+                1.0
+            ],
+            "id": 2,
+            "material": "Plastic",
+            "meshPath": "",
+            "name": "Part",
+            "position": [
+                0.0,
+                2.0,
+                0.0
+            ],
+            "reflectance": 0.0,
+            "rotation": [
+                0.0,
+                -0.0,
+                0.0
+            ],
+            "script": "",
+            "scriptLanguage": 0,
+            "shape": "Block",
+            "size": [
+                7.214883327484131,
+                2.0,
+                7.206314563751221
+            ],
+            "transparency": 0.0,
+            "username": ""
+        },
+        {
+            "accessoryColor": [
+                1.0,
+                1.0,
+                0.0,
+                1.0
+            ],
+            "accessoryType": 0,
+            "anchored": true,
+            "canCollide": true,
+            "color": [
+                0.9999995231628418,
+                0.0,
+                1.0,
+                1.0
+            ],
+            "id": 3,
+            "material": "Plastic",
+            "meshPath": "",
+            "name": "Part (Copy)",
+            "position": [
+                0.0,
+                2.043654680252075,
+                9.664432525634766
+            ],
+            "reflectance": 0.0,
+            "rotation": [
+                0.0,
+                -0.0,
+                0.0
+            ],
+            "script": "",
+            "scriptLanguage": 0,
+            "shape": "Block",
+            "size": [
+                7.214883327484131,
+                2.0,
+                7.206314563751221
+            ],
+            "transparency": 0.0,
+            "username": ""
+        },
+        {
+            "accessoryColor": [
+                1.0,
+                1.0,
+                0.0,
+                1.0
+            ],
+            "accessoryType": 0,
+            "anchored": true,
+            "canCollide": true,
+            "color": [
+                0.699999988079071,
+                0.699999988079071,
+                0.699999988079071,
+                1.0
+            ],
+            "id": 4,
+            "material": "Plastic",
+            "meshPath": "",
+            "name": "Part (Copy)",
+            "position": [
+                0.0,
+                2.1116843223571777,
+                -9.743284225463867
+            ],
+            "reflectance": 0.0,
+            "rotation": [
+                0.0,
+                -0.0,
+                0.0
+            ],
+            "script": "",
+            "scriptLanguage": 0,
+            "shape": "Block",
+            "size": [
+                7.214883327484131,
+                2.0,
+                7.206314563751221
+            ],
+            "transparency": 0.0,
+            "username": ""
+        },
+        {
+            "accessoryColor": [
+                1.0,
+                1.0,
+                0.0,
+                1.0
+            ],
+            "accessoryType": 0,
+            "anchored": true,
+            "canCollide": true,
+            "color": [
+                0.699999988079071,
+                0.699999988079071,
+                0.699999988079071,
+                1.0
+            ],
+            "id": 5,
+            "material": "Plastic",
+            "meshPath": "",
+            "name": "Part (Copy) (Copy)",
+            "position": [
+                -11.940678596496582,
+                1.806230902671814,
+                -9.743284225463867
+            ],
+            "reflectance": 0.0,
+            "rotation": [
+                0.0,
+                -0.0,
+                0.0
+            ],
+            "script": "",
+            "scriptLanguage": 0,
+            "shape": "Block",
+            "size": [
+                14.78604793548584,
+                2.0,
+                7.206314563751221
+            ],
+            "transparency": 0.0,
+            "username": ""
+        },
+        {
+            "accessoryColor": [
+                1.0,
+                1.0,
+                0.0,
+                1.0
+            ],
+            "accessoryType": 0,
+            "anchored": true,
+            "canCollide": true,
+            "color": [
+                1.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "id": 6,
+            "material": "Plastic",
+            "meshPath": "",
+            "name": "Part (Copy) (Copy) (Copy)",
+            "position": [
+                -9.035567283630371,
+                3.1536197662353516,
+                -9.743284225463867
+            ],
+            "reflectance": 0.0,
+            "rotation": [
+                0.0,
+                -0.0,
+                0.0
+            ],
+            "script": "// C++ Touch-Kill Script: respawn player on contact\nextern \"C\" __declspec(dllexport) void updatePart(PartState* state) {\n    // if this object touches the player, respawn player at last checkpoint\n    if (state->isTouchingPlayer) {\n        state->playerNeedsRespawn = true;\n    }\n}\n",
+            "scriptLanguage": 1,
+            "shape": "Block",
+            "size": [
+                2.2440788745880127,
+                1.0443109273910522,
+                7.206314563751221
+            ],
+            "transparency": 0.0,
+            "username": ""
+        },
+        {
+            "accessoryColor": [
+                1.0,
+                1.0,
+                0.0,
+                1.0
+            ],
+            "accessoryType": 0,
+            "anchored": true,
+            "canCollide": true,
+            "color": [
+                1.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "id": 7,
+            "material": "Plastic",
+            "meshPath": "",
+            "name": "Part (Copy) (Copy) (Copy) (Copy)",
+            "position": [
+                -14.992431640625,
+                3.034780502319336,
+                -9.743284225463867
+            ],
+            "reflectance": 0.0,
+            "rotation": [
+                0.0,
+                -0.0,
+                0.0
+            ],
+            "script": "// C++ Touch-Kill Script: respawn player on contact\nextern \"C\" __declspec(dllexport) void updatePart(PartState* state) {\n    // if this object touches the player, respawn player at last checkpoint\n    if (state->isTouchingPlayer) {\n        state->playerNeedsRespawn = true;\n    }\n}\n",
+            "scriptLanguage": 1,
+            "shape": "Block",
+            "size": [
+                2.2440788745880127,
+                1.0443109273910522,
+                7.206314563751221
+            ],
+            "transparency": 0.0,
+            "username": ""
+        },
+        {
+            "accessoryColor": [
+                1.0,
+                1.0,
+                0.0,
+                1.0
+            ],
+            "accessoryType": 0,
+            "anchored": true,
+            "canCollide": false,
+            "color": [
+                0.8999999761581421,
+                0.8999999761581421,
+                0.10000000149011612,
+                1.0
+            ],
+            "id": 8,
+            "material": "Plastic",
+            "meshPath": "",
+            "name": "Checkpoint",
+            "position": [
+                0.0,
+                3.1023755073547363,
+                -9.94725227355957
+            ],
+            "reflectance": 0.0,
+            "rotation": [
+                0.0,
+                -0.0,
+                0.0
+            ],
+            "script": "checkpoint\n",
+            "scriptLanguage": 0,
+            "shape": "Cylinder",
+            "size": [
+                3.0,
+                0.5,
+                3.0
+            ],
+            "transparency": 0.0,
+            "username": ""
+        },
+        {
+            "accessoryColor": [
+                1.0,
+                1.0,
+                0.0,
+                1.0
+            ],
+            "accessoryType": 0,
+            "anchored": true,
+            "canCollide": true,
+            "color": [
+                0.1906958818435669,
+                0.1906958818435669,
+                0.6078431606292725,
+                1.0
+            ],
+            "id": 9,
+            "material": "Plastic",
+            "meshPath": "",
+            "name": "Part (Copy) (Copy)",
+            "position": [
+                -24.717435836791992,
+                2.035109281539917,
+                -9.743284225463867
+            ],
+            "reflectance": 0.0,
+            "rotation": [
+                0.0,
+                -0.0,
+                0.0
+            ],
+            "script": "",
+            "scriptLanguage": 0,
+            "shape": "Block",
+            "size": [
+                7.214883327484131,
+                2.0,
+                7.206314563751221
+            ],
+            "transparency": 0.0,
+            "username": ""
+        },
+        {
+            "accessoryColor": [
+                1.0,
+                1.0,
+                0.0,
+                1.0
+            ],
+            "accessoryType": 0,
+            "anchored": true,
+            "canCollide": true,
+            "color": [
+                0.1906958818435669,
+                0.1906958818435669,
+                0.6078431606292725,
+                1.0
+            ],
+            "id": 10,
+            "material": "Plastic",
+            "meshPath": "",
+            "name": "Part (Copy) (Copy) (Copy)",
+            "position": [
+                -34.0826416015625,
+                4.581391334533691,
+                -9.743284225463867
+            ],
+            "reflectance": 0.0,
+            "rotation": [
+                0.0,
+                -0.0,
+                0.0
+            ],
+            "script": "",
+            "scriptLanguage": 0,
+            "shape": "Block",
+            "size": [
+                7.214883327484131,
+                2.0,
+                7.206314563751221
+            ],
+            "transparency": 0.0,
+            "username": ""
+        },
+        {
+            "accessoryColor": [
+                1.0,
+                1.0,
+                0.0,
+                1.0
+            ],
+            "accessoryType": 0,
+            "anchored": true,
+            "canCollide": true,
+            "color": [
+                0.1906958818435669,
+                0.1906958818435669,
+                0.6078431606292725,
+                1.0
+            ],
+            "id": 11,
+            "material": "Plastic",
+            "meshPath": "",
+            "name": "Part (Copy) (Copy) (Copy) (Copy)",
+            "position": [
+                -40.64794158935547,
+                8.812226295471191,
+                -9.743284225463867
+            ],
+            "reflectance": 0.0,
+            "rotation": [
+                0.0,
+                -0.0,
+                0.0
+            ],
+            "script": "",
+            "scriptLanguage": 0,
+            "shape": "Block",
+            "size": [
+                7.214883327484131,
+                2.0,
+                15.350495338439941
+            ],
+            "transparency": 0.0,
+            "username": ""
+        },
+        {
+            "accessoryColor": [
+                1.0,
+                1.0,
+                0.0,
+                1.0
+            ],
+            "accessoryType": 0,
+            "anchored": true,
+            "canCollide": false,
+            "color": [
+                0.0,
+                1.0,
+                0.11764693260192871,
+                1.0
+            ],
+            "id": 12,
+            "material": "Plastic",
+            "meshPath": "",
+            "name": "Part (Copy) (Copy) (Copy) (Copy) (Copy)",
+            "position": [
+                -53.92679214477539,
+                8.922036170959473,
+                -7.178176403045654
+            ],
+            "reflectance": 0.0,
+            "rotation": [
+                0.0,
+                -0.0,
+                0.0
+            ],
+            "script": "",
+            "scriptLanguage": 0,
+            "shape": "Block",
+            "size": [
+                16.3603458404541,
+                2.0,
+                3.953606128692627
+            ],
+            "transparency": 0.0,
+            "username": ""
+        },
+        {
+            "accessoryColor": [
+                1.0,
+                1.0,
+                0.0,
+                1.0
+            ],
+            "accessoryType": 0,
+            "anchored": true,
+            "canCollide": true,
+            "color": [
+                0.0,
+                1.0,
+                0.11764693260192871,
+                1.0
+            ],
+            "id": 13,
+            "material": "Plastic",
+            "meshPath": "",
+            "name": "Part (Copy) (Copy) (Copy) (Copy) (Copy) (Copy)",
+            "position": [
+                -53.92679214477539,
+                8.770271301269531,
+                -14.184627532958984
+            ],
+            "reflectance": 0.0,
+            "rotation": [
+                0.0,
+                -0.0,
+                0.0
+            ],
+            "script": "",
+            "scriptLanguage": 0,
+            "shape": "Block",
+            "size": [
+                16.3603458404541,
+                2.0,
+                3.953606128692627
+            ],
+            "transparency": 0.0,
+            "username": ""
+        },
+        {
+            "accessoryColor": [
+                1.0,
+                1.0,
+                0.0,
+                1.0
+            ],
+            "accessoryType": 0,
+            "anchored": true,
+            "canCollide": true,
+            "color": [
+                0.0,
+                1.0,
+                0.7352938652038574,
+                1.0
+            ],
+            "id": 14,
+            "material": "Plastic",
+            "meshPath": "",
+            "name": "Part (Copy) (Copy) (Copy) (Copy) (Copy)",
+            "position": [
+                -73.12931060791016,
+                8.717700958251953,
+                -9.743284225463867
+            ],
+            "reflectance": 0.0,
+            "rotation": [
+                0.0,
+                -0.0,
+                0.0
+            ],
+            "script": "",
+            "scriptLanguage": 0,
+            "shape": "Block",
+            "size": [
+                7.214883327484131,
+                2.0,
+                15.350495338439941
+            ],
+            "transparency": 0.0,
+            "username": ""
+        },
+        {
+            "accessoryColor": [
+                1.0,
+                1.0,
+                0.0,
+                1.0
+            ],
+            "accessoryType": 0,
+            "anchored": true,
+            "canCollide": false,
+            "color": [
+                1.0,
+                0.800000011920929,
+                0.0,
+                1.0
+            ],
+            "id": 15,
+            "material": "Neon",
+            "meshPath": "",
+            "name": "VictoryPoint",
+            "position": [
+                -71.03939819335938,
+                10.826732635498047,
+                -10.261646270751953
+            ],
+            "reflectance": 0.0,
+            "rotation": [
+                0.0,
+                -0.0,
+                0.0
+            ],
+            "script": "victory\n",
+            "scriptLanguage": 0,
+            "shape": "Block",
+            "size": [
+                2.0,
+                2.0,
+                2.0
+            ],
+            "transparency": 0.0,
+            "username": ""
+        }
+    ]
+}
