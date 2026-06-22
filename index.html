@@ -20,13 +20,15 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
             overflow-x: hidden;
+            padding: 20px;
         }
 
         /* Hero / Cabeçalho */
         header {
             text-align: center;
-            padding: 60px 20px 40px;
+            margin-bottom: 30px;
             width: 100%;
             max-width: 1200px;
         }
@@ -49,32 +51,29 @@
             line-height: 1.6;
         }
 
-        /* Seção Principal / Container de Login */
+        /* Seção do Card de Login */
         .main-container {
             width: 100%;
             max-width: 450px;
-            margin: 20px padding;
-            padding: 20px;
             perspective: 1000px;
+            transition: all 0.5s ease;
         }
 
         .login-card {
-            background: url('https://media.istockphoto.com/id/137803728/pt/vetorial/mapa-de-parque-de-divers%C3%B5es.jpg?s=612x612&w=0&k=20&c=t9RiqRoPprmZoXInlpDvVtT0GEjOeW32lSkpeAxM_hc=') no-center/cover;
+            background: url('https://media.istockphoto.com/id/137803728/pt/vetorial/mapa-de-parque-de-divers%C3%B5es.jpg?s=612x612&w=0&k=20&c=t9RiqRoPprmZoXInlpDvVtT0GEjOeW32lSkpeAxM_hc=') no-repeat center/cover;
             border-radius: 24px;
-            padding: 3px; /* Espaço para a borda em degradê */
+            padding: 3px;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
             position: relative;
             overflow: hidden;
         }
 
-        /* Filtro escuro para garantir leitura sobre o mapa do parque */
         .login-overlay {
-            background: rgba(15, 12, 32, 0.82);
+            background: rgba(15, 12, 32, 0.85);
             backdrop-filter: blur(4px);
             border-radius: 21px;
             padding: 40px 30px;
             width: 100%;
-            height: 100%;
         }
 
         .login-overlay h2 {
@@ -134,18 +133,37 @@
             opacity: 0.95;
         }
 
-        /* Seção de Downloads (Rodapé / Final da Página) */
-        footer {
-            margin-top: auto;
+        /* Painel Pós-Login (Escondido por padrão) */
+        .dashboard-container {
+            display: none; /* Esconde a tela inicialmente */
             width: 100%;
-            padding: 60px 20px;
+            max-width: 600px;
             text-align: center;
-            background: linear-gradient(to top, rgba(10, 7, 20, 1), rgba(15, 12, 32, 0));
+            animation: fadeIn 0.6s ease forwards;
         }
 
-        footer p {
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .dashboard-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .dashboard-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            color: #00dfd8;
+        }
+
+        .dashboard-card p {
             color: #94a3b8;
-            margin-bottom: 25px;
+            margin-bottom: 35px;
             font-size: 1.1rem;
         }
 
@@ -166,11 +184,10 @@
             text-decoration: none;
             border-radius: 50px;
             transition: all 0.3s ease;
-            min-width: 240px;
+            min-width: 220px;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
         }
 
-        /* Botão GM Engine */
         .engine {
             background: linear-gradient(45deg, #11998e, #38ef7d);
             color: #051c18;
@@ -181,7 +198,6 @@
             transform: translateY(-3px);
         }
 
-        /* Botão GM Play */
         .play {
             background: linear-gradient(45deg, #ff007f, #ff758c);
             color: #ffffff;
@@ -196,7 +212,7 @@
         @media (max-width: 600px) {
             h1 { font-size: 2.2rem; }
             .download-container { flex-direction: column; align-items: center; }
-            .btn-download { width: 100%; max-width: 300px; }
+            .btn-download { width: 100%; }
         }
     </style>
 </head>
@@ -207,11 +223,11 @@
         <p class="subtitle">Acesse o seu ecossistema definitivo de desenvolvimento, criação de jogos e entretenimento interativo.</p>
     </header>
 
-    <main class="main-container">
+    <main class="main-container" id="loginScreen">
         <div class="login-card">
             <div class="login-overlay">
                 <h2>Entrar na Plataforma</h2>
-                <form onsubmit="event.preventDefault();">
+                <form id="loginForm">
                     <div class="input-group">
                         <label for="username">Usuário ou E-mail</label>
                         <input type="text" id="username" placeholder="Seu usuário" required>
@@ -226,17 +242,33 @@
         </div>
     </main>
 
-    <footer>
-        <p>Pronto para começar a criar e jogar?</p>
-        <div class="download-container">
-            <a href="https://github.com/danviana-has/GM_Engine/releases/tag/GM_Engine-Gera%C3%A7%C3%A3o-2" target="_blank" class="btn-download engine">
-                Download GM Engine
-            </a>
-            <a href="https://github.com/danviana-has/GM_Engine/releases/tag/GM-Play-Gera%C3%A7%C3%A3o-2" target="_blank" class="btn-download play">
-                Download GM Play
-            </a>
+    <section class="dashboard-container" id="dashboardScreen">
+        <div class="dashboard-card">
+            <h3>Bem-vindo ao Ecossistema!</h3>
+            <p>Seu login foi efetuado com sucesso. Escolha qual ferramenta deseja baixar para começar:</p>
+            
+            <div class="download-container">
+                <a href="https://github.com/danviana-has/GM_Engine/releases/tag/GM_Engine-Gera%C3%A7%C3%A3o-2" target="_blank" class="btn-download engine">
+                    Download GM Engine
+                </a>
+                <a href="https://github.com/danviana-has/GM_Engine/releases/tag/GM-Play-Gera%C3%A7%C3%A3o-2" target="_blank" class="btn-download play">
+                    Download GM Play
+                </a>
+            </div>
         </div>
-    </footer>
+    </section>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Impede o recarregamento da página
+
+            // Esconde a tela de login
+            document.getElementById('loginScreen').style.display = 'none';
+            
+            // Exibe a tela de downloads com os botões das Releases
+            document.getElementById('dashboardScreen').style.display = 'block';
+        });
+    </script>
 
 </body>
 </html>
