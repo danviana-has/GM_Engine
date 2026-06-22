@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GM Games Ecosystem (GGE)</title>
+    <style>
+        /* Configurações Globais */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f0c20 0%, #15102a 50%, #060409 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+        }
+
+        /* Hero / Cabeçalho */
+        header {
+            text-align: center;
+            padding: 60px 20px 40px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, #ff007f, #7928ca, #00dfd8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #a0aec0;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Seção Principal / Container de Login */
+        .main-container {
+            width: 100%;
+            max-width: 450px;
+            margin: 20px padding;
+            padding: 20px;
+            perspective: 1000px;
+        }
+
+        .login-card {
+            background: url('https://media.istockphoto.com/id/137803728/pt/vetorial/mapa-de-parque-de-divers%C3%B5es.jpg?s=612x612&w=0&k=20&c=t9RiqRoPprmZoXInlpDvVtT0GEjOeW32lSkpeAxM_hc=') no-center/cover;
+            border-radius: 24px;
+            padding: 3px; /* Espaço para a borda em degradê */
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Filtro escuro para garantir leitura sobre o mapa do parque */
+        .login-overlay {
+            background: rgba(15, 12, 32, 0.82);
+            backdrop-filter: blur(4px);
+            border-radius: 21px;
+            padding: 40px 30px;
+            width: 100%;
+            height: 100%;
+        }
+
+        .login-overlay h2 {
+            font-size: 1.8rem;
+            text-align: center;
+            margin-bottom: 30px;
+            background: linear-gradient(45deg, #00dfd8, #7928ca);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 0.9rem;
+            color: #cbd5e1;
+            margin-bottom: 8px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 14px 16px;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            color: #fff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #00dfd8;
+            background: rgba(255, 255, 255, 0.12);
+            box-shadow: 0 0 12px rgba(0, 223, 216, 0.3);
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(90deg, #7928ca, #ff007f);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, opacity 0.2s;
+            margin-top: 10px;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            opacity: 0.95;
+        }
+
+        /* Seção de Downloads (Rodapé / Final da Página) */
+        footer {
+            margin-top: auto;
+            width: 100%;
+            padding: 60px 20px;
+            text-align: center;
+            background: linear-gradient(to top, rgba(10, 7, 20, 1), rgba(15, 12, 32, 0));
+        }
+
+        footer p {
+            color: #94a3b8;
+            margin-bottom: 25px;
+            font-size: 1.1rem;
+        }
+
+        .download-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn-download {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px 32px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            min-width: 240px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Botão GM Engine */
+        .engine {
+            background: linear-gradient(45deg, #11998e, #38ef7d);
+            color: #051c18;
+        }
+
+        .engine:hover {
+            box-shadow: 0 12px 25px rgba(56, 239, 125, 0.4);
+            transform: translateY(-3px);
+        }
+
+        /* Botão GM Play */
+        .play {
+            background: linear-gradient(45deg, #ff007f, #ff758c);
+            color: #ffffff;
+        }
+
+        .play:hover {
+            box-shadow: 0 12px 25px rgba(255, 0, 127, 0.4);
+            transform: translateY(-3px);
+        }
+
+        /* Responsividade */
+        @media (max-width: 600px) {
+            h1 { font-size: 2.2rem; }
+            .download-container { flex-direction: column; align-items: center; }
+            .btn-download { width: 100%; max-width: 300px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>GM Games Ecosystem (GGE)</h1>
+        <p class="subtitle">Acesse o seu ecossistema definitivo de desenvolvimento, criação de jogos e entretenimento interativo.</p>
+    </header>
+
+    <main class="main-container">
+        <div class="login-card">
+            <div class="login-overlay">
+                <h2>Entrar na Plataforma</h2>
+                <form onsubmit="event.preventDefault();">
+                    <div class="input-group">
+                        <label for="username">Usuário ou E-mail</label>
+                        <input type="text" id="username" placeholder="Seu usuário" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="password">Senha</label>
+                        <input type="password" id="password" placeholder="Sua senha" required>
+                    </div>
+                    <button type="submit" class="btn-login">Acessar Painel</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>Pronto para começar a criar e jogar?</p>
+        <div class="download-container">
+            <a href="https://github.com/danviana-has/GM_Engine/releases/tag/GM_Engine-Gera%C3%A7%C3%A3o-2" target="_blank" class="btn-download engine">
+                Download GM Engine
+            </a>
+            <a href="https://github.com/danviana-has/GM_Engine/releases/tag/GM-Play-Gera%C3%A7%C3%A3o-2" target="_blank" class="btn-download play">
+                Download GM Play
+            </a>
+        </div>
+    </footer>
+
+</body>
+</html>
